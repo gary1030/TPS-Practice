@@ -1,0 +1,105 @@
+{
+  "members": [
+    {
+      "id": 1,
+      "name": "Ann",
+      "gender": "female",
+      "birth": "2000/01/01",
+      "date": "2020/01/01"
+    },
+    {
+      "id": 2,
+      "name": "Ben",
+      "gender": "female",
+      "birth": "2000/01/01",
+      "date": "2020/01/01"
+    },
+    {
+      "id": 3,
+      "name": "Cindy",
+      "gender": "female",
+      "birth": "20000101",
+      "date": "20200101"
+    },
+    {
+      "id": 4,
+      "name": "Doo",
+      "gender": "male",
+      "birth": "20000101",
+      "date": "20200101"
+    },
+    {
+      "id": 5,
+      "name": "Egg",
+      "gender": "male",
+      "birth": "20000101",
+      "date": "20200101"
+    }
+  ],
+  "goods": [
+    {
+      "id": 1,
+      "name": "A"
+    },
+    {
+      "id": 2,
+      "name": "B"
+    },
+    {
+      "id": 3,
+      "name": "B"
+    },
+    {
+      "id": 4,
+      "name": "D"
+    },
+    {
+      "id": 5,
+      "name": "E"
+    }
+  ],
+  "transactions": [
+    {
+      "id": 1,
+      "time": "20200101 1300",
+      "memberId": 1,
+      "goodId": 1,
+      "price": 100
+    },
+    {
+      "id": 2,
+      "time": "20200101 1400",
+      "memberId": 2,
+      "goodId": 1,
+      "price": 200
+    },
+    {
+      "id": 3,
+      "time": "20200101 1500",
+      "memberId": 3,
+      "goodId": 2,
+      "price": 200
+    },
+    {
+      "id": 4,
+      "time": "20200102 1300",
+      "memberId": 1,
+      "goodId": 3,
+      "price": 400
+    },
+    {
+      "id": 5,
+      "time": "20200103 1300",
+      "memberId": 4,
+      "goodId": 3,
+      "price": 200
+    },
+    {
+      "id": 6,
+      "time": "20200103 1500",
+      "memberId": 5,
+      "goodId": 3,
+      "price": 1000
+    }
+  ]
+}
