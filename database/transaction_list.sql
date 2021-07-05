@@ -13,7 +13,7 @@ CREATE TABLE `transaction` (
 --SELECT * FROM transaction;
 --DROP TABLE transaction
 
-INSERT INTO `transaction` (`transaction_id`, `transaction_date`, `member_id1`, `product_id1`, `transaction_price`) VALUES
+INSERT INTO `transaction` (`transaction_id`, `transaction_date`, `member_id`, `product_id`, `transaction_price`) VALUES
 (1, '2021-07-04', 10, 16, 5809),
 (2, '2021-01-01', 2, 11, 2653),
 (3, '2021-07-04', 1, 12, 5364),
