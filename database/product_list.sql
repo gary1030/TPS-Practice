@@ -1,7 +1,10 @@
 CREATE TABLE `product` (
-  `product_id` int(3) NOT NULL,
-  `product_name` char(10) DEFAULT NULL
+  `product_id` int(3) PRIMARY KEY,
+  `product_name` char(10)
 )
+
+SELECT * FROM product;
+DROP TABLE product
 
 INSERT INTO `product` (`product_id`, `product_name`) VALUES
 (1, 'THF'),
