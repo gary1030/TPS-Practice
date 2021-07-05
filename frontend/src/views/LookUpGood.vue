@@ -1,15 +1,18 @@
 <template>
   <div>
-    <good-form></good-form>
+    <good-form-by-id></good-form-by-id>
+    <good-form-by-list></good-form-by-list>
   </div>
 </template>
 
 <script>
-import GoodForm from "../components/GoodForm.vue";
+import GoodFormById from "../components/GoodFormById.vue";
+import GoodFormByList from "../components/ClientFormByList.vue";
 
 export default {
   components: {
-    GoodForm,
+    GoodFormById,
+    GoodFormByList,
   },
 };
 </script>

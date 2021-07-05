@@ -1,8 +1,9 @@
 <template>
   <div>
+    <!-- @ 是 v-on 的縮寫 -->
     <form @submit.prevent="onSubmitById">
       <h3>
-        <label for="look-up-by-id"> Please Enter Good Id </label>
+        <label for="look-up-by-id"> Please Enter Member Id </label>
       </h3>
       <input
         type="text"
@@ -16,27 +17,22 @@
   </div>
 </template>
 <script>
-//import { defineComponent } from '@vue/composition-api'
-
 export default {
   methods: {
-    onSubmitByList() {
-      console.log("Look Up by List");
-    },
     onSubmitById() {
       console.log("Look Up by Id");
       if (this.id === "") {
         return;
       }
-      this.$emit("look-up-id", this.id);
+      this.$emit("look-up-member", this.id);
       this.id = "";
     },
   },
-  data() {
-    return {
-      id: "",
-      name: "",
-    };
-  },
 };
 </script>
+
+<style>
+li {
+  list-style: none;
+}
+</style>
