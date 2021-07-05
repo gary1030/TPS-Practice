@@ -40,15 +40,6 @@ export default {
       selected_p: "",
     };
   },
-  // async created() {
-  //   try {
-  //     const res = await axios.get(`http://localhost:3000/goods`);
-
-  //     this.products = res.data;
-  //   } catch (e) {
-  //     console.error(e);
-  //   }
-  // },
 };
 </script>
 
