@@ -47,7 +47,7 @@
     },
     {
       "id": 3,
-      "name": "B"
+      "name": "C"
     },
     {
       "id": 4,
@@ -60,46 +60,39 @@
   ],
   "transactions": [
     {
-      "id": 1,
-      "time": "20200101 1300",
-      "memberId": 1,
-      "goodId": 1,
-      "price": 100
+      "transaction_id": 1,
+      "transaction_date": 20210704,
+      "member_id": 1,
+      "product_id": 2,
+      "transaction_price": 100
     },
     {
-      "id": 2,
-      "time": "20200101 1400",
-      "memberId": 2,
-      "goodId": 1,
-      "price": 200
+      "transaction_id": 2,
+      "transaction_date": 20210705,
+      "member_id": 2,
+      "product_id": 2,
+      "transaction_price": 200
     },
     {
-      "id": 3,
-      "time": "20200101 1500",
-      "memberId": 3,
-      "goodId": 2,
-      "price": 200
+      "transaction_id": 4,
+      "transaction_date": 20210707,
+      "member_id": 3,
+      "product_id": 2,
+      "transaction_price": 500
     },
     {
-      "id": 4,
-      "time": "20200102 1300",
-      "memberId": 1,
-      "goodId": 3,
-      "price": 400
+      "transaction_id": 7,
+      "transaction_date": 20210710,
+      "member_id": 1,
+      "product_id": 2,
+      "transaction_price": 300
     },
     {
-      "id": 5,
-      "time": "20200103 1300",
-      "memberId": 4,
-      "goodId": 3,
-      "price": 200
-    },
-    {
-      "id": 6,
-      "time": "20200103 1500",
-      "memberId": 5,
-      "goodId": 3,
-      "price": 1000
+      "transaction_id": 8,
+      "transaction_date": 20210711,
+      "member_id": 1,
+      "product_id": 2,
+      "transaction_price": 100
     }
   ]
 }

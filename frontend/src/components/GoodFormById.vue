@@ -2,7 +2,7 @@
   <div>
     <form @submit.prevent="onSubmitById">
       <h3>
-        <label for="look-up-by-id"> Please Enter Good Id </label>
+        <label for="look-up-by-id"> Please Enter Product Id </label>
       </h3>
       <input
         type="text"
@@ -21,11 +21,11 @@
 export default {
   methods: {
     onSubmitById() {
-      console.log("Look Up by Id");
+      //console.log("Look Up by Id");
       if (this.id === "") {
         return;
       }
-      this.$emit("look-up-product", this.id);
+      this.$emit("look-up-product", parseInt(this.id));
       this.id = "";
     },
   },
