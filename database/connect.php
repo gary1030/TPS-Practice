@@ -132,9 +132,47 @@ function productTransDetail($ID, $link){
 }
 productTransDetail(1, $link);
 
+// function three
+function consumptionPerDay($ID, $link){
+    echo"Hello";
+    $sql = "SELECT x.member_id, y.number / x.number AS 'consumption_per_day'
+    FROM(
+        SELECT DATEDIFF('2022-01-01', member.member_date) AS number, member.member_id
+        FROM member
+        WHERE member.member_id = 3
+    ) x
+    JOIN(
+        SELECT SUM(transaction_price) AS number
+        FROM transaction
+        WHERE transaction.member_id = 3
+    ) y ";
+
+    if($stmt = $link -> query($sql))
+    {
+        echo"Hello";
+        echo " <table width='300' height='80' border='1'>
+        <td width='100'>會員ID</td>
+        <td width='200'>平均每日消費金額</td>";
+        echo "</tr>";
+        while($result = mysqli_fetch_array($stmt))
+        {
+            echo "<tr>";
+            for ($j=0; $j<2; $j++)
+            {
+                echo "<td height='30'>$result[$j]</td>";
+            } 
+            echo "</tr>";
+            //echo '<p> Transaction ID: '.$result -> transaction_id.', Transaction Date: '.$result -> transaction_date.', member ID: '.$result -> member_id.', Product ID: '.$result -> product_id.', Transaction Price: '.$result -> transaction_price.'</p> ';
+        }
+    }
+    echo "<br>";
+}
+consumptionPerDay($ID, $link);
 
 
-// function 4
+
+
+// function four
 //option = TRUE for gender, FALSE for age level.
 function summaryTrans($option, $ID, $link){
         
