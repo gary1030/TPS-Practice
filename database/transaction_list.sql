@@ -4,7 +4,7 @@ CREATE TABLE `transaction` (
   `member_id` int(10) ,
   `product_id` int(10) ,
   `transaction_price` int(10),
-  FOREIGN KEY (member_id) REFERENCES member(member_id) ON DELETE SET NULL
+  FOREIGN KEY (member_id) REFERENCES member(member_id) ON DELETE SET NULL,
   FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE SET NULL
 )
 
