@@ -1,11 +1,11 @@
 CREATE TABLE `transaction` (
   `transaction_id` int(10) PRIMARY KEY,
   `transaction_date` date,
-  `member_id1` int(10) ,
-  `product_id1` int(10) ,
+  `member_id` int(10) ,
+  `product_id` int(10) ,
   `transaction_price` int(10),
-  FOREIGN KEY (member_id1) REFERENCES member(member_id) ON DELETE SET NULL
-  FOREIGN KEY (product_id1) REFERENCES product(product_id) ON DELETE SET NULL
+  FOREIGN KEY (member_id) REFERENCES member(member_id) ON DELETE SET NULL
+  FOREIGN KEY (product_id) REFERENCES product(product_id) ON DELETE SET NULL
 )
 
 
