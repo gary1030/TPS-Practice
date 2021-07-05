@@ -6,10 +6,11 @@
 
 <script>
 import ClientForm from "../components/ClientForm.vue";
-
+// import ClientList from "../components/ClientList.vue";
 export default {
   components: {
     ClientForm,
   },
 };
 </script>
+
