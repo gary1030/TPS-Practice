@@ -1,12 +1,14 @@
-CREATE TABLE `member` (
-  `member_id` int(10) NOT NULL,
-  `member_name` char(10) NOT NULL,
-  `member_gender` char(1) NOT NULL DEFAULT 'M',
-  `member_BD` date NOT NULL,
-  `member_date` date NOT NULL
+CREATE TABLE member (
+  member_id int(10) NOT NULL PRIMARY KEY,
+  member_name VARCHAR(10),
+  member_gender VARCHAR(1),
+  member_BD date,
+  member_date date
 )
-
-INSERT INTO `member` (`member_id`, `member_name`, `member_gender`, `member_BD`, `member_date`) VALUES
+DROP TABLE member
+Describe member
+SELECT * FROM member;
+INSERT INTO member (member_id, member_name, member_gender, member_BD, member_date) VALUES
 (1, 'Midti', 'F', '2000-03-04', '2015-08-17'),
 (2, 'Iqhli', 'M', '1999-08-24', '2015-11-24'),
 (3, 'Kypbn', 'F', '2001-11-11', '2018-08-13'),
