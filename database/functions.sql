@@ -19,3 +19,18 @@ FROM transaction
 WHERE member_id = 3
 GROUP BY product_id
 ORDER BY product_id;
+
+/*function three (input member id and output the avaerage daily consumption)
+GETDATE: get the time in the computer now (?)
+*/
+SELECT x.member_id, y.number / x.number AS 'consumption_per_day'
+FROM(
+    SELECT DATEDIFF('2022-01-01', member.member_date) AS number, member.member_id
+    FROM member
+) x
+JOIN(
+    SELECT SUM(transaction_price) AS number , transaction.member_id
+    FROM transaction
+    GROUP BY transaction.member_id
+) y 
+ON x.member_id = y.member_id;
