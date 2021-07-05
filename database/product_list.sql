@@ -1,7 +1,7 @@
 CREATE TABLE `product` (
   `product_id` int(3) PRIMARY KEY,
   `product_name` char(10)
-)
+);
 
 --SELECT * FROM product;
 --DROP TABLE product

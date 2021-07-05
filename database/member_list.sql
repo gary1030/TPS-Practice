@@ -4,7 +4,7 @@ CREATE TABLE member (
   member_gender VARCHAR(1),
   member_BD date,
   member_date date
-)
+);
 
 --DROP TABLE member
 --Describe member
