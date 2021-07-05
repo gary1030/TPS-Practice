@@ -3,8 +3,8 @@ CREATE TABLE `product` (
   `product_name` char(10)
 )
 
-SELECT * FROM product;
-DROP TABLE product
+--SELECT * FROM product;
+--DROP TABLE product
 
 INSERT INTO `product` (`product_id`, `product_name`) VALUES
 (1, 'THF'),
