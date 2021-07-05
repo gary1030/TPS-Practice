@@ -10,8 +10,8 @@ CREATE TABLE `transaction` (
 
 
 
-SELECT * FROM transaction;
-DROP TABLE transaction
+--SELECT * FROM transaction;
+--DROP TABLE transaction
 
 INSERT INTO `transaction` (`transaction_id`, `transaction_date`, `member_id1`, `product_id1`, `transaction_price`) VALUES
 (1, '2021-07-04', 10, 16, 5809),
