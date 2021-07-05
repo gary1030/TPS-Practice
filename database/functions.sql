@@ -20,6 +20,20 @@ WHERE member_id = 3
 GROUP BY product_id
 ORDER BY product_id;
 
+
+/*function two (input product id and get all the transaction record)*/
+SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
+FROM transaction
+WHERE transaction.product_id = 1;
+
+
+/*function two (input product id and get transaction sum & times from each member)*/
+SELECT transaction.member_id, COUNT(transaction.member_id), SUM(transaction.transaction_price)
+FROM transaction
+WHERE product_id = 1
+GROUP BY member_id
+ORDER BY member_id;
+
 /*function three (input member id and output the avaerage daily consumption)
 GETDATE: get the time in the computer now (?)
 */
@@ -34,3 +48,35 @@ JOIN(
     GROUP BY transaction.member_id
 ) y 
 ON x.member_id = y.member_id;
+
+/*function four (input product id and output transaction sum & times for different genders)
+*/
+SELECT member.member_gender, COUNT(transaction.member_id), SUM(transaction.transaction_price)
+FROM member
+JOIN transaction
+ON member.member_id = transaction.member_id
+WHERE transaction.product_id = 20
+GROUP BY member.member_gender
+ORDER BY member.member_gender;
+
+/*function four (input product id and output transaction sum & times for different age level)
+*/
+SELECT member.member_gender, COUNT(transaction.member_id), SUM(transaction.transaction_price)
+FROM member
+JOIN transaction
+ON member.member_id = transaction.member_id
+WHERE transaction.product_id = 20
+GROUP BY member.member_gender
+ORDER BY member.member_gender;
+
+/*function four (input product id and output transaction sum & times for different age level)
+*/
+/*Where age level is 0 for age group below 20, 1 for age group 20-30, 2 for age group 30-40, 3 for age group 40 above.*/
+SELECT INTERVAL(DATEDIFF('2022-01-01', member.member_BD),7305,10958,14610) AS ageLevel, COUNT(transaction.member_id), SUM(transaction.transaction_price)
+FROM member
+JOIN transaction
+ON member.member_id = transaction.member_id
+WHERE transaction.product_id = 1
+GROUP BY ageLevel
+ORDER BY ageLevel;
+/*repeated counting for the same member*/
