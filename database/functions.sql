@@ -59,15 +59,7 @@ WHERE transaction.product_id = 20
 GROUP BY member.member_gender
 ORDER BY member.member_gender;
 
-/*function four (input product id and output transaction sum & times for different age level)
-*/
-SELECT member.member_gender, COUNT(transaction.member_id), SUM(transaction.transaction_price)
-FROM member
-JOIN transaction
-ON member.member_id = transaction.member_id
-WHERE transaction.product_id = 20
-GROUP BY member.member_gender
-ORDER BY member.member_gender;
+
 
 /*function four (input product id and output transaction sum & times for different age level)
 */
