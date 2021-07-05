@@ -5,9 +5,11 @@ CREATE TABLE member (
   member_BD date,
   member_date date
 )
-DROP TABLE member
-Describe member
-SELECT * FROM member;
+
+--DROP TABLE member
+--Describe member
+--SELECT * FROM member;
+
 INSERT INTO member (member_id, member_name, member_gender, member_BD, member_date) VALUES
 (1, 'Midti', 'F', '2000-03-04', '2015-08-17'),
 (2, 'Iqhli', 'M', '1999-08-24', '2015-11-24'),
