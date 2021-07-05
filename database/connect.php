@@ -134,7 +134,6 @@ productTransDetail(1, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
-    echo"Hello";
     $sql = "SELECT x.member_id, y.number / x.number AS 'consumption_per_day'
     FROM(
         SELECT DATEDIFF('2022-01-01', member.member_date) AS number, member.member_id
@@ -149,7 +148,6 @@ function consumptionPerDay($ID, $link){
 
     if($stmt = $link -> query($sql))
     {
-        echo"Hello";
         echo " <table width='300' height='80' border='1'>
         <td width='100'>會員ID</td>
         <td width='200'>平均每日消費金額</td>";
