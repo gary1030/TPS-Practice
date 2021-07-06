@@ -67,7 +67,7 @@ function memberTransDetailByID($ID, $link){
         fclose($fp);
     }
 }
-//memberTransDetail($inputID, $link);
+memberTransDetailByID($inputID, $link);
 
 function memberTransDetailByName($Name, $link){
     //$sql = "SET @name = 'Tatsj';";
@@ -119,7 +119,7 @@ function memberTransDetailByName($Name, $link){
         fclose($fp);
     }
 }
-memberTransDetailByName($inputMemberName, $link);
+//memberTransDetailByName($inputMemberName, $link);
 
 // fuction 2
 function productTransDetailByID($ID, $link){
@@ -172,7 +172,7 @@ function productTransDetailByID($ID, $link){
         fclose($fp);
     }
 }
-// productTransDetailByID($inputID, $link);
+productTransDetailByID($inputID, $link);
 
 function productTransDetailByName($Name, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
@@ -224,7 +224,7 @@ function productTransDetailByName($Name, $link){
         // echo $myJSON;
     
         //在電腦上生成
-        $fp = fopen('productTransDetailByID_2.json', 'w');
+        $fp = fopen('productTransDetailByName_2.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
