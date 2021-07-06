@@ -2,7 +2,6 @@
 // Connecting, selecting database
 $user = 'root';
 $password = 'root';
-//$db = 'attempt_01';
 $db = 'tps_db';
 $host = 'localhost';
 $port = 8889;
@@ -79,27 +78,24 @@ function productTransDetail($ID, $link){
 
     if($stmt = $link -> query($sql))
     {
-        echo " <table width='500' height='120' border='1'>";
-        echo " <tr height='50' align='center'>";
-        echo " <td width = '50'> 交易ID </td>";
-        echo " <td width = '80'> 交易日期 </td>";
-        echo " <td width= '50'> 會員ID </td>";
-        echo " <td width = '80'> 交易金額 </td>";
-        //echo " <td width = '160'> member_date </td>";
-        echo "</tr>";
-        while($row = mysqli_fetch_array($stmt)) 
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt)) 
         { 
-            echo "<tr align='center'>";
-            for ($j=0; $j<4; $j++)
-            { //每行有 4 個欄位
-                echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-            }
-            echo "</tr>";
-        } 
+            $rows[] = $result;
+        }
+        //生成json
+        $myJSON = json_encode($rows);
+        echo $myJSON;
+        
+        //在電腦上生成
+        $fp = fopen('productTransDetail_1.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
+    
 
     /*function two (input product id and get transaction sum & times from each member)*/
-    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id), SUM(transaction.transaction_price)
+    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transaction_count, SUM(transaction.transaction_price) AS transaction_sum
     FROM transaction
     WHERE product_id = $ID
     GROUP BY member_id
@@ -108,23 +104,19 @@ function productTransDetail($ID, $link){
 
     if($stmt = $link -> query($sql))
     {
-        echo " <table width='500' height='120' border='1'>";
-        echo " <tr height='50' align='center'>";
-        echo " <td width = '50'> 會員ID </td>";
-        echo " <td width = '50'> 歷史購買次數 </td>";
-        echo " <td width= '80'> 購買累計金額 </td>";
-        //echo " <td width = '160'> 交易金額 </td>";
-        //echo " <td width = '160'> member_date </td>";
-        echo "</tr>";
-        while($row = mysqli_fetch_array($stmt)) 
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt)) 
         { 
-            echo "<tr align='center'>";
-            for ($j=0; $j<3; $j++)
-            { //每行有 3 個欄位
-                echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-            }
-            echo "</tr>";
+            $rows[] = $result;
         } 
+        //生成json
+        $myJSON = json_encode($rows);
+        echo $myJSON;
+    
+        //在電腦上生成
+        $fp = fopen('productTransDetail_2', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
 }
 //productTransDetail($input, $link);
