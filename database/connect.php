@@ -47,7 +47,7 @@ function memberTransDetail($ID, $link){
 
     
     $sql = "SELECT 
-            transaction.product_id, COUNT(transaction.product_id) as productCnt, SUM(transaction.transaction_price) as productSum
+            transaction.product_id, COUNT(transaction.product_id) as transTimes, SUM(transaction.transaction_price) as transAmount
             FROM transaction WHERE member_id = $ID
             GROUP BY product_id
             ORDER BY product_id";
@@ -95,7 +95,7 @@ function productTransDetail($ID, $link){
     
 
     /*function two (input product id and get transaction sum & times from each member)*/
-    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transaction_count, SUM(transaction.transaction_price) AS transaction_sum
+    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
     FROM transaction
     WHERE product_id = $ID
     GROUP BY member_id
@@ -150,128 +150,79 @@ function consumptionPerDay($ID, $link){
     }
 }
 
-consumptionPerDay($input, $link);
+// consumptionPerDay($input, $link);
 
 
 
 
 // function four
-//option = TRUE for gender, FALSE for age level.
-function summaryTrans($option, $ID, $link){
+function summaryTrans($ID, $link){
         
-    if($option)
+    /*function four (input product id and output transaction sum & times for different genders)*/
+    $sql = "SELECT member.member_gender, COUNT(transaction.member_id) AS transaction_times, SUM(transaction.transaction_price) AS transaction_amount
+    FROM member
+    JOIN transaction
+    ON member.member_id = transaction.member_id
+    WHERE transaction.product_id = $ID
+    GROUP BY member.member_gender
+    ORDER BY member.member_gender";
+
+    if($stmt = $link -> query($sql))
     {
-        /*function four (input product id and output transaction sum & times for different genders)*/
-        $sql = "SELECT member.member_gender, COUNT(transaction.member_id), SUM(transaction.transaction_price)
-        FROM member
-        JOIN transaction
-        ON member.member_id = transaction.member_id
-        WHERE transaction.product_id = $ID
-        GROUP BY member.member_gender
-        ORDER BY member.member_gender";
-
-        if($stmt = $link -> query($sql))
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
         {
-            $rows = array();
-            while($result = mysqli_fetch_assoc($stmt))
-            {
-                $rows[] = $result;
-            }
-            $myJSON = json_encode($rows);
-
-            $fp = fopen('summaryTrans_gender.json', 'w');
-            fwrite($fp, $myJSON);
-            fclose($fp);
+            $rows[] = $result;
         }
-        // if($stmt = $link -> query($sql))
-        // {
-        //     echo " <table width='500' height='120' border='1'>";
-        //     echo " <tr height='50' align='center'>";
-        //     echo " <td width = '50'> 會員性別 </td>";
-        //     echo " <td width = '50'> 消費總人次 </td>";
-        //     echo " <td width= '80'> 消費總金額 </td>";
-        //     echo "</tr>";
-        //     while($row = mysqli_fetch_array($stmt)) 
-        //     { 
-        //         echo "<tr align='center'>";
-        //         for ($j=0; $j<3; $j++)
-        //         { //每行有 3 個欄位
-        //             echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-        //         }
-        //         echo "</tr>";
-        //     } 
-        // }
+        $myJSON = json_encode($rows);
+
+        $fp = fopen('summaryTrans_gender.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
-    else
+     
+    /*function four (input product id and output transaction sum & times for different age level)
+    */
+    /*Where age level is 0 for age group below 20, 1 for age group 20-30, 2 for age group 30-40, 3 for age group 40 above.*/
+    $sql = "SELECT INTERVAL(DATEDIFF('2022-01-01', member.member_BD),7305,10958,14610) AS ageLevel, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
+    FROM member
+    JOIN transaction
+    ON member.member_id = transaction.member_id
+    WHERE transaction.product_id = $ID
+    GROUP BY ageLevel
+    ORDER BY ageLevel";
+
+    if($stmt = $link -> query($sql))
     {
-        /*function four (input product id and output transaction sum & times for different age level)
-        */
-        /*Where age level is 0 for age group below 20, 1 for age group 20-30, 2 for age group 30-40, 3 for age group 40 above.*/
-        $sql = "SELECT INTERVAL(DATEDIFF('2022-01-01', member.member_BD),7305,10958,14610) AS ageLevel, COUNT(transaction.member_id), SUM(transaction.transaction_price)
-        FROM member
-        JOIN transaction
-        ON member.member_id = transaction.member_id
-        WHERE transaction.product_id = $ID
-        GROUP BY ageLevel
-        ORDER BY ageLevel";
-
-        if($stmt = $link -> query($sql))
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
         {
-            $rows = array();
-            while($result = mysqli_fetch_assoc($stmt))
-            {
-                if($result['ageLevel'] == '0'){
-                    $result['ageLevel'] = 'below 20';
-                }
-                else if($result['ageLevel'] == '1'){
-                    $result['ageLevel'] = '20-30';
-                }
-                else if($result['ageLevel'] == '2'){
-                    $result['ageLevel'] = '30-40';
-                }
-                else if($result['ageLevel'] == '3'){
-                    $result['ageLevel'] = '40 above';
-                }
-                $rows[] = $result;
+            if($result['ageLevel'] == '0'){
+                $result['ageLevel'] = 'below 20';
             }
-
-
-            $myJSON = json_encode($rows);
-
-
-            $fp = fopen('summaryTrans_age.json', 'w');
-            fwrite($fp, $myJSON);
-            fclose($fp);
+            else if($result['ageLevel'] == '1'){
+                $result['ageLevel'] = '20-30';
+            }
+            else if($result['ageLevel'] == '2'){
+                $result['ageLevel'] = '30-40';
+            }
+            else if($result['ageLevel'] == '3'){
+                $result['ageLevel'] = '40 above';
+            }
+            $rows[] = $result;
         }
-        // if($stmt = $link -> query($sql))
-        // {
-        //     echo " <table width='500' height='120' border='1'>";
-        //     echo " <tr height='50' align='center'>";
-        //     echo " <td width = '50'> 年齡區間 </td>";
-        //     echo " <td width = '50'> 消費總人次 </td>";
-        //     echo " <td width= '80'> 消費總金額 </td>";
-        //     echo "</tr>";
-        //     while($row = mysqli_fetch_array($stmt)) 
-        //     { 
-        //         echo "<tr align='center'>";
-        //         if($row[0] == 0)
-        //             echo "<td height='30'> 20歲以下 </td>";
-        //         else if($row[0] == 1)
-        //             echo "<td height='30'> 20歲至30歲 </td>";
-        //         else if($row[0] == 2)
-        //             echo "<td height='30'> 20歲至40歲 </td>";
-        //         else if($row[0] == 3)
-        //             echo "<td height='30'> 40歲以上 </td>";
-        //         for ($j=1; $j<3; $j++)
-        //         { //每行有 3 個欄位
-        //             echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-        //         }
-        //         echo "</tr>";
-        //     } 
-        // }
+
+
+        $myJSON = json_encode($rows);
+
+
+        $fp = fopen('summaryTrans_age.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
+
 }
-summaryTrans(FALSE, $input, $link);//option = TRUE for gender, FALSE for age level.
+// summaryTrans($input, $link);
 
 
 ?>
