@@ -85,7 +85,7 @@ function productTransDetail($ID, $link){
         }
         //生成json
         $myJSON = json_encode($rows);
-        echo $myJSON;
+        // echo $myJSON;
         
         //在電腦上生成
         $fp = fopen('productTransDetail_1.json', 'w');
@@ -111,15 +111,15 @@ function productTransDetail($ID, $link){
         } 
         //生成json
         $myJSON = json_encode($rows);
-        echo $myJSON;
+        // echo $myJSON;
     
         //在電腦上生成
-        $fp = fopen('productTransDetail_2', 'w');
+        $fp = fopen('productTransDetail_2.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
 }
-//productTransDetail($input, $link);
+// productTransDetail($input, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
