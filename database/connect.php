@@ -22,9 +22,9 @@ mysqli_set_charset($link, 'utf8');
 // get ID
 $inputID = 3;
 // get Member Name
-$inputMemberName = 'Midti';
+$inputMemberName = 'Lucas';
 // get Product Name
-$inputProductName = 'Lucas';
+$inputProductName = 'Mini-Doras';
 
 // function one
 function memberTransDetailByID($ID, $link){
@@ -84,7 +84,6 @@ function memberTransDetailByName($Name, $link){
         $rows = array();
         while($result = mysqli_fetch_assoc($stmt))
         {
-            echo "inside<br>";
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
@@ -123,7 +122,7 @@ function memberTransDetailByName($Name, $link){
 memberTransDetailByName($inputMemberName, $link);
 
 // fuction 2
-function productTransDetail($ID, $link){
+function productTransDetailByID($ID, $link){
     /*function two (input product id and get all the transaction record)*/
     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
     FROM transaction
@@ -142,7 +141,7 @@ function productTransDetail($ID, $link){
         // echo $myJSON;
         
         //在電腦上生成
-        $fp = fopen('productTransDetail_1.json', 'w');
+        $fp = fopen('productTransDetailByID_1.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
@@ -168,12 +167,69 @@ function productTransDetail($ID, $link){
         // echo $myJSON;
     
         //在電腦上生成
-        $fp = fopen('productTransDetail_2.json', 'w');
+        $fp = fopen('productTransDetailByID_2.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
 }
-// productTransDetail($inputID, $link);
+// productTransDetailByID($inputID, $link);
+
+function productTransDetailByName($Name, $link){
+    $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
+    FROM transaction
+    WHERE transaction.product_id IN(
+        SELECT product_id
+        FROM product
+        WHERE product_name LIKE '%$Name'
+    )";
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+        // echo $myJSON;
+    
+        $fp = fopen('productTransDetailByName_1.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
+    }
+    else{
+        echo "Fail to find.<br>";
+    }
+    /*function two (input product id and get transaction sum & times from each member)*/
+    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
+    FROM transaction
+    WHERE transaction.product_id IN(
+        SELECT product_id
+        FROM product
+        WHERE product_name LIKE '%$Name'
+    )
+    GROUP BY member_id
+    ORDER BY member_id";
+
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt)) 
+        { 
+            $rows[] = $result;
+        } 
+        //生成json
+        $myJSON = json_encode($rows);
+        // echo $myJSON;
+    
+        //在電腦上生成
+        $fp = fopen('productTransDetailByID_2.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
+    }
+}
+productTransDetailByName($inputProductName, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
