@@ -1,1 +1,1 @@
-[{"ageLevel":"0","COUNT(transaction.member_id)":"1","SUM(transaction.transaction_price)":"962"},{"ageLevel":"2","COUNT(transaction.member_id)":"1","SUM(transaction.transaction_price)":"6207"}]
+[{"ageLevel":"below 20","COUNT(transaction.member_id)":"1","SUM(transaction.transaction_price)":"962"},{"ageLevel":"30-40","COUNT(transaction.member_id)":"1","SUM(transaction.transaction_price)":"6207"}]

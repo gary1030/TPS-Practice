@@ -220,9 +220,24 @@ function summaryTrans($option, $ID, $link){
             $rows = array();
             while($result = mysqli_fetch_assoc($stmt))
             {
+                if($result['ageLevel'] == '0'){
+                    $result['ageLevel'] = 'below 20';
+                }
+                else if($result['ageLevel'] == '1'){
+                    $result['ageLevel'] = '20-30';
+                }
+                else if($result['ageLevel'] == '2'){
+                    $result['ageLevel'] = '30-40';
+                }
+                else if($result['ageLevel'] == '3'){
+                    $result['ageLevel'] = '40 above';
+                }
                 $rows[] = $result;
             }
+
+
             $myJSON = json_encode($rows);
+
 
             $fp = fopen('summaryTrans_age.json', 'w');
             fwrite($fp, $myJSON);
@@ -256,7 +271,7 @@ function summaryTrans($option, $ID, $link){
         // }
     }
 }
-summaryTrans(TRUE, $input, $link);//option = TRUE for gender, FALSE for age level.
+summaryTrans(FALSE, $input, $link);//option = TRUE for gender, FALSE for age level.
 
 
 ?>
