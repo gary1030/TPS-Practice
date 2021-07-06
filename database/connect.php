@@ -228,7 +228,15 @@ function summaryTrans($option, $ID, $link){
             while($row = mysqli_fetch_array($stmt)) 
             { 
                 echo "<tr align='center'>";
-                for ($j=0; $j<3; $j++)
+                if($row[0] == 0)
+                    echo "<td height='30'> 20歲以下 </td>";
+                else if($row[0] == 1)
+                    echo "<td height='30'> 20歲至30歲 </td>";
+                else if($row[0] == 2)
+                    echo "<td height='30'> 20歲至40歲 </td>";
+                else if($row[0] == 3)
+                    echo "<td height='30'> 40歲以上 </td>";
+                for ($j=1; $j<3; $j++)
                 { //每行有 3 個欄位
                     echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
                 }
@@ -237,7 +245,7 @@ function summaryTrans($option, $ID, $link){
         }
     }
 }
-summaryTrans(FALSE, 1, $link);//option = TRUE for gender, FALSE for age level.
+summaryTrans(FALSE, 5, $link);//option = TRUE for gender, FALSE for age level.
 
 
 ?>
