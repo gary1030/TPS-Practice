@@ -27,24 +27,20 @@ function memberTransDetail($ID, $link){
 
     if($stmt = $link -> query($sql))
     {
-        echo " <table width='500' height='120' border='1'>
-        <tr height='50' align='center'>
-        <td width='50'>交易ID</td>
-        <td width='80'>交易日期</td>
-        <td width='50'>商品ID</td>
-        <td width='80'>交易金額</td>";
-
-        while($result = mysqli_fetch_array($stmt))
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
         {
-            echo "<tr>";
-            for ($j=0; $j<4; $j++)
-            {
-                echo "<td height='30'>$result[$j]</td>";
-            } 
-            echo "</tr>";
-            //echo '<p> Transaction ID: '.$result -> transaction_id.', Transaction Date: '.$result -> transaction_date.', member ID: '.$result -> member_id.', Product ID: '.$result -> product_id.', Transaction Price: '.$result -> transaction_price.'</p> ';
+            $rows[] = $result;
         }
+        $myJSON = json_encode($rows);
+    
+        $fp = fopen('memberTransDetail_1.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
+    
+
+    echo "<br>";
 
     
     $sql = "SELECT 
@@ -55,19 +51,16 @@ function memberTransDetail($ID, $link){
     
     if($stmt = $link -> query($sql))
     {
-        echo "<table width='500' height='120' border='1'>
-            <tr height='50' align='center'>
-            <td width='50'>商品ID</td>
-            <td width='50'>歷史購買次數</td>
-            <td width='80'>購買累計金額</td>";
-        while($result = mysqli_fetch_array($stmt))
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
         {
-            echo "<tr>";
-            for ($j=0; $j<3; $j++)
-            {
-                echo "<td height='30'>$result[$j]</td>";
-            }
+            $rows[] = $result;
         }
+        $myJSON = json_encode($rows);
+    
+        $fp = fopen('memberTransDetail_2.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
 }
 //memberTransDetail(3, $link);
@@ -148,23 +141,19 @@ function consumptionPerDay($ID, $link){
 
     if($stmt = $link -> query($sql))
     {
-        echo " <table width='300' height='80' border='1'>
-        <tr height='50' align='center'>
-        <td width='50'>會員ID</td>
-        <td width='80'>平均每日消費金額</td>";
-        echo "</tr>";
-        while($result = mysqli_fetch_array($stmt))
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
         {
-            echo "<tr align='center'>";
-            for ($j=0; $j<2; $j++)
-            {
-                echo "<td height='30'>$result[$j]</td>";
-            } 
-            echo "</tr>";
-            //echo '<p> Transaction ID: '.$result -> transaction_id.', Transaction Date: '.$result -> transaction_date.', member ID: '.$result -> member_id.', Product ID: '.$result -> product_id.', Transaction Price: '.$result -> transaction_price.'</p> ';
+            $rows[] = $result;
         }
+        $myJSON = json_encode($rows);
+    
+        $fp = fopen('consumptionPerDay.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
     }
 }
+
 consumptionPerDay($ID, $link);
 
 
