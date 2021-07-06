@@ -1,6 +1,6 @@
 CREATE TABLE `product` (
   `product_id` int(3) PRIMARY KEY,
-  `product_name` char(10)
+  `product_name` char(20)
 );
 
 --SELECT * FROM product;

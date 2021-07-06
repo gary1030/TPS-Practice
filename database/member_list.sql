@@ -1,7 +1,7 @@
 CREATE TABLE member (
   member_id int(10) NOT NULL PRIMARY KEY,
-  member_name VARCHAR(10),
-  member_gender VARCHAR(1),
+  member_name char(20),
+  member_gender char(1),
   member_BD date,
   member_date date
 );
