@@ -20,10 +20,14 @@ $success = mysqli_real_connect(
 mysqli_set_charset($link, 'utf8');
 
 // get ID
-$input = 3;
+$inputID = 3;
+// get Member Name
+$inputMemberName = 'Midti';
+// get Product Name
+$inputProductName = 'Lucas';
 
 // function one
-function memberTransDetail($ID, $link){
+function memberTransDetailByID($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
     FROM transaction
     WHERE transaction.member_id = $ID";
@@ -37,13 +41,10 @@ function memberTransDetail($ID, $link){
         }
         $myJSON = json_encode($rows);
     
-        $fp = fopen('memberTransDetail_1.json', 'w');
+        $fp = fopen('memberTransDetailByID_1.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
-    
-
-    echo "<br>";
 
     
     $sql = "SELECT 
@@ -61,12 +62,65 @@ function memberTransDetail($ID, $link){
         }
         $myJSON = json_encode($rows);
     
-        $fp = fopen('memberTransDetail_2.json', 'w');
+        $fp = fopen('memberTransDetailByID_2.json', 'w');
         fwrite($fp, $myJSON);
         fclose($fp);
     }
 }
-//memberTransDetail($input, $link);
+//memberTransDetail($inputID, $link);
+
+function memberTransDetailByName($Name, $link){
+    //$sql = "SET @name = 'Tatsj';";
+    $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
+    FROM transaction
+    WHERE transaction.member_id IN(
+        SELECT member_id
+        FROM member
+        WHERE member_name LIKE '%$Name'
+    )";
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            echo "inside<br>";
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+    
+        $fp = fopen('memberTransDetailByName_1.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
+    }
+
+    
+    $sql = "SELECT 
+            transaction.product_id, COUNT(transaction.product_id) as transTimes, SUM(transaction.transaction_price) as transAmount
+            FROM transaction 
+            WHERE transaction.member_id IN(
+                SELECT member_id
+                FROM member
+                WHERE member_name LIKE '%$Name'
+            )
+            GROUP BY product_id
+            ORDER BY product_id";
+    
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+    
+        $fp = fopen('memberTransDetailByName_2.json', 'w');
+        fwrite($fp, $myJSON);
+        fclose($fp);
+    }
+}
+memberTransDetailByName($inputMemberName, $link);
 
 // fuction 2
 function productTransDetail($ID, $link){
@@ -119,7 +173,7 @@ function productTransDetail($ID, $link){
         fclose($fp);
     }
 }
-// productTransDetail($input, $link);
+// productTransDetail($inputID, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
@@ -150,7 +204,7 @@ function consumptionPerDay($ID, $link){
     }
 }
 
-// consumptionPerDay($input, $link);
+// consumptionPerDay($inputID, $link);
 
 
 
@@ -222,7 +276,7 @@ function summaryTrans($ID, $link){
     }
 
 }
-// summaryTrans($input, $link);
+// summaryTrans($inputID, $link);
 
 
 ?>
