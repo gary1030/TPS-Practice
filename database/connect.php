@@ -3,7 +3,7 @@
 $user = 'root';
 $password = 'root';
 //$db = 'attempt_01';
-$db = 'tps';
+$db = 'tps_db';
 $host = 'localhost';
 $port = 8889;
 
@@ -180,22 +180,35 @@ function summaryTrans($option, $ID, $link){
 
         if($stmt = $link -> query($sql))
         {
-            echo " <table width='500' height='120' border='1'>";
-            echo " <tr height='50' align='center'>";
-            echo " <td width = '50'> 會員性別 </td>";
-            echo " <td width = '50'> 消費總人次 </td>";
-            echo " <td width= '80'> 消費總金額 </td>";
-            echo "</tr>";
-            while($row = mysqli_fetch_array($stmt)) 
-            { 
-                echo "<tr align='center'>";
-                for ($j=0; $j<3; $j++)
-                { //每行有 3 個欄位
-                    echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-                }
-                echo "</tr>";
-            } 
+            $rows = array();
+            while($result = mysqli_fetch_assoc($stmt))
+            {
+                $rows[] = $result;
+            }
+            $myJSON = json_encode($rows);
+
+            $fp = fopen('summaryTrans_gender.json', 'w');
+            fwrite($fp, $myJSON);
+            fclose($fp);
         }
+        // if($stmt = $link -> query($sql))
+        // {
+        //     echo " <table width='500' height='120' border='1'>";
+        //     echo " <tr height='50' align='center'>";
+        //     echo " <td width = '50'> 會員性別 </td>";
+        //     echo " <td width = '50'> 消費總人次 </td>";
+        //     echo " <td width= '80'> 消費總金額 </td>";
+        //     echo "</tr>";
+        //     while($row = mysqli_fetch_array($stmt)) 
+        //     { 
+        //         echo "<tr align='center'>";
+        //         for ($j=0; $j<3; $j++)
+        //         { //每行有 3 個欄位
+        //             echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
+        //         }
+        //         echo "</tr>";
+        //     } 
+        // }
     }
     else
     {
@@ -212,33 +225,46 @@ function summaryTrans($option, $ID, $link){
 
         if($stmt = $link -> query($sql))
         {
-            echo " <table width='500' height='120' border='1'>";
-            echo " <tr height='50' align='center'>";
-            echo " <td width = '50'> 年齡區間 </td>";
-            echo " <td width = '50'> 消費總人次 </td>";
-            echo " <td width= '80'> 消費總金額 </td>";
-            echo "</tr>";
-            while($row = mysqli_fetch_array($stmt)) 
-            { 
-                echo "<tr align='center'>";
-                if($row[0] == 0)
-                    echo "<td height='30'> 20歲以下 </td>";
-                else if($row[0] == 1)
-                    echo "<td height='30'> 20歲至30歲 </td>";
-                else if($row[0] == 2)
-                    echo "<td height='30'> 20歲至40歲 </td>";
-                else if($row[0] == 3)
-                    echo "<td height='30'> 40歲以上 </td>";
-                for ($j=1; $j<3; $j++)
-                { //每行有 3 個欄位
-                    echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
-                }
-                echo "</tr>";
-            } 
+            $rows = array();
+            while($result = mysqli_fetch_assoc($stmt))
+            {
+                $rows[] = $result;
+            }
+            $myJSON = json_encode($rows);
+
+            $fp = fopen('summaryTrans_age.json', 'w');
+            fwrite($fp, $myJSON);
+            fclose($fp);
         }
+        // if($stmt = $link -> query($sql))
+        // {
+        //     echo " <table width='500' height='120' border='1'>";
+        //     echo " <tr height='50' align='center'>";
+        //     echo " <td width = '50'> 年齡區間 </td>";
+        //     echo " <td width = '50'> 消費總人次 </td>";
+        //     echo " <td width= '80'> 消費總金額 </td>";
+        //     echo "</tr>";
+        //     while($row = mysqli_fetch_array($stmt)) 
+        //     { 
+        //         echo "<tr align='center'>";
+        //         if($row[0] == 0)
+        //             echo "<td height='30'> 20歲以下 </td>";
+        //         else if($row[0] == 1)
+        //             echo "<td height='30'> 20歲至30歲 </td>";
+        //         else if($row[0] == 2)
+        //             echo "<td height='30'> 20歲至40歲 </td>";
+        //         else if($row[0] == 3)
+        //             echo "<td height='30'> 40歲以上 </td>";
+        //         for ($j=1; $j<3; $j++)
+        //         { //每行有 3 個欄位
+        //             echo "<td height='30'>$row[$j]</td>";   // 欄位高 30 pix
+        //         }
+        //         echo "</tr>";
+        //     } 
+        // }
     }
 }
-summaryTrans(FALSE, $input, $link);//option = TRUE for gender, FALSE for age level.
+summaryTrans(TRUE, $input, $link);//option = TRUE for gender, FALSE for age level.
 
 
 ?>
