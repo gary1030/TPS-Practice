@@ -1,1 +1,31 @@
-[{"transaction_id":"3","transaction_date":"2021-07-04","product_id":"12","transaction_price":"5364"},{"transaction_id":"4","transaction_date":"2021-07-25","product_id":"19","transaction_price":"7489"},{"transaction_id":"30","transaction_date":"2021-08-30","product_id":"6","transaction_price":"9556"},{"transaction_id":"34","transaction_date":"2021-04-14","product_id":"10","transaction_price":"1901"},{"transaction_id":"90","transaction_date":"2021-03-29","product_id":"20","transaction_price":"3775"},{"transaction_id":"96","transaction_date":"2021-12-17","product_id":"18","transaction_price":"3970"}]
+[
+    {
+        "transaction_id":"3",
+        "transaction_date":"2021-07-04",
+        "product_id":"12",
+        "transaction_price":"5364"
+    },
+    {
+        "transaction_id":"4",
+        "transaction_date":"2021-07-25",
+        "product_id":"19",
+        "transaction_price":"7489"
+    },
+    {
+        "transaction_id":"30",
+        "transaction_date":"2021-08-30",
+        "product_id":"6",
+        "transaction_price":"9556"
+    },
+    {
+        "transaction_id":"34",
+        "transaction_date":"2021-04-14",
+        "product_id":"10",
+        "transaction_price":"1901"
+    },
+    {
+        "transaction_id":"90",
+        "transaction_date":"2021-03-29",
+        "product_id":"20",
+        "transaction_price":"3775"
+    },{"transaction_id":"96","transaction_date":"2021-12-17","product_id":"18","transaction_price":"3970"}]
