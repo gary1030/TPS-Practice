@@ -7,8 +7,16 @@
     ></client-form-by-list>
   </div>
   <br/>
-  <br/>
-  <h3>{{ cur_member.name }} 的交易列表</h3>
+  <h3 v-if="isSearched">{{cur_member.name}} 的歷史消費紀錄</h3>
+  <table-lite
+      :columns="table2.columns"
+      :rows="table2.rows"
+      :total="record"
+      :sortable="table2.sortable"
+      :messages="table2.messages"
+      @do-search="doSearch"
+  ></table-lite>
+  <h3 v-if="isSearched">{{ cur_member.name }} 的交易列表</h3>
   <table-lite
       :columns="table.columns"
       :rows="table.rows"
@@ -17,7 +25,7 @@
       :messages="table.messages"
       @do-search="doSearch"
   ></table-lite>
-  <h3>{{cur_member.name}}的總花費為: {{this.cur_total}}</h3>
+  <h3 v-if="isSearched">{{cur_member.name}}的總花費為: {{this.cur_total}}</h3>
 
 
 
@@ -40,7 +48,8 @@ export default {
       trans: [],
       members: [],
       products: [],
-      cur_member: { id: 1, name: "Ann" },
+      isSearched: false,
+      cur_member: {id: "", name: ""},
       cur_trans: [],
       record: [],
       cur_total: '',
@@ -79,6 +88,47 @@ export default {
           gotoPageLabel: "Go to page:",
           noDataAvailable: "No data",
         },
+      },
+      table2: {
+        isLoading: false,
+        isReSearch: false,
+        columns: [
+          {
+            label: "id",
+            field: "transaction_id",
+            width: "15%",
+            sortable: false,
+          },
+          {
+            label: "date",
+            field: "transaction_date",
+            width: "15%",
+            sortable: false,
+          },
+          {
+            label: "product",
+            field: "name",
+            width: "10%",
+            sortable: false,
+          },
+          {
+            label: "amount",
+            field: "transaction_amount",
+            width: "10%",
+            sortable: false,
+          }
+        ],
+        rows: [],
+        sortable:{
+          order: "id",
+          sort: "asc",
+        },
+        messages: {
+          pagingInfo: "",
+          pageSizeChangeLabel: "Row count:",
+          gotoPageLabel: "Go to page:",
+          noDataAvailable: "No data",
+        },
       }
     };
   },
@@ -89,6 +139,8 @@ export default {
       this.cur_member.name = this.members.find(
         (ele) => ele.id === memberId
       ).name;
+
+      this.isSearched = true;
       
       var id = this.cur_member.id;
 
@@ -99,13 +151,29 @@ export default {
       } catch(e) {
         console.error(e);
       }
+      
+      // get products data
+      try {
+        const res = await axios.get(`http://localhost:3000/goods`);
+
+        this.products = res.data;
+      } catch (e) {
+        console.error(e);
+      }
 
       // cur_tran means we only care about trans of current chosen member
       var cur_tran = this.trans.filter(function(item){
         return item.member_id === id;
       });
+      // here, we try to change product id to corresponding product name using data.find()
+      cur_tran.forEach((e) => {
+        e.name = this.products.find((ele) => ele.id === e.product_id).name;
+      });
+
+
       console.log(cur_tran);
       this.cur_trans = cur_tran;
+      this.table2.rows = cur_tran;
 
 
       var product_trans = this.products;
