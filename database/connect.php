@@ -21,23 +21,23 @@ mysqli_set_charset($link, 'utf8');
 
 // function one
 function memberTransDetail($ID, $link){
-    $sql = "SELECT *
+    $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
     FROM transaction
     WHERE transaction.member_id = $ID";
 
     if($stmt = $link -> query($sql))
     {
-        echo " <table width='600' height='120' border='1'>
-        <td width='100'>交易ID</td>
-        <td width='200'>交易日期</td>
-        <td width='100'>會員ID</td>
-        <td width='100'>商品ID</td>
-        <td width='100'>交易金額</td>";
+        echo " <table width='500' height='120' border='1'>
+        <tr height='50' align='center'>
+        <td width='50'>交易ID</td>
+        <td width='80'>交易日期</td>
+        <td width='50'>商品ID</td>
+        <td width='80'>交易金額</td>";
 
         while($result = mysqli_fetch_array($stmt))
         {
             echo "<tr>";
-            for ($j=0; $j<5; $j++)
+            for ($j=0; $j<4; $j++)
             {
                 echo "<td height='30'>$result[$j]</td>";
             } 
@@ -55,10 +55,11 @@ function memberTransDetail($ID, $link){
     
     if($stmt = $link -> query($sql))
     {
-        echo "<table width='400' height='120' border='1'>
-        <td width='100'>商品ID</td>
-        <td width='150'>歷史購買次數</td>
-        <td width='150'>購買累計金額</td>";
+        echo "<table width='500' height='120' border='1'>
+            <tr height='50' align='center'>
+            <td width='50'>商品ID</td>
+            <td width='50'>歷史購買次數</td>
+            <td width='80'>購買累計金額</td>";
         while($result = mysqli_fetch_array($stmt))
         {
             echo "<tr>";
@@ -68,9 +69,8 @@ function memberTransDetail($ID, $link){
             }
         }
     }
-    echo "<br>";
 }
-memberTransDetail(3, $link);
+//memberTransDetail(3, $link);
 
 // fuction 2
 function productTransDetail($ID, $link){
@@ -130,7 +130,7 @@ function productTransDetail($ID, $link){
         } 
     }
 }
-productTransDetail(1, $link);
+//productTransDetail(1, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
@@ -149,12 +149,13 @@ function consumptionPerDay($ID, $link){
     if($stmt = $link -> query($sql))
     {
         echo " <table width='300' height='80' border='1'>
-        <td width='100'>會員ID</td>
-        <td width='200'>平均每日消費金額</td>";
+        <tr height='50' align='center'>
+        <td width='50'>會員ID</td>
+        <td width='80'>平均每日消費金額</td>";
         echo "</tr>";
         while($result = mysqli_fetch_array($stmt))
         {
-            echo "<tr>";
+            echo "<tr align='center'>";
             for ($j=0; $j<2; $j++)
             {
                 echo "<td height='30'>$result[$j]</td>";
@@ -163,7 +164,6 @@ function consumptionPerDay($ID, $link){
             //echo '<p> Transaction ID: '.$result -> transaction_id.', Transaction Date: '.$result -> transaction_date.', member ID: '.$result -> member_id.', Product ID: '.$result -> product_id.', Transaction Price: '.$result -> transaction_price.'</p> ';
         }
     }
-    echo "<br>";
 }
 consumptionPerDay($ID, $link);
 
