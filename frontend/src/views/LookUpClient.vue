@@ -7,62 +7,33 @@
     ></client-form-by-list>
   </div>
   <br/>
-  <!-- <h3>All Transaction Records</h3>
-  <div id='container'>
-    <table>
-    <thead>
-      <tr>
-        <th>id</th>
-        <th>trans date</th>
-        <th>product</th>
-        <th>buyer</th>
-        <th>price</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(tran, index) in trans" :key="index">
-        <td>{{index + 1}}</td>
-        <td>{{tran.transaction_date}}</td>
-        <td>{{tran.product_id}}</td>
-        <td>{{tran.member_id}}</td>
-        <td>{{tran.transaction_price}}</td>
-      </tr>
-    </tbody>
-    </table>
-  </div> -->
-  <!-- <br/> -->
-  <!-- <div>Total spent: {{total}}</div> -->
-  <h3>{{cur_member.name}}'s Transaction Records</h3>
-  <div id='container'>
-    <table>
-      <thead>
-        <tr>
-          <th>product</th>
-          <th>trans times</th>
-          <th>trans amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(product, index) in record" :key="index">
-          <td>{{product.name}}</td>
-          <td>{{product.trans_cnt}}</td>
-          <td>{{product.trans_amount}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <h3>{{cur_member.name}}'s total spent$: {{this.cur_total}}</h3>
   <br/>
+  <h3>{{ cur_member.name }} 的交易列表</h3>
+  <table-lite
+      :columns="table.columns"
+      :rows="table.rows"
+      :total="record"
+      :sortable="table.sortable"
+      :messages="table.messages"
+      @do-search="doSearch"
+  ></table-lite>
+  <h3>{{cur_member.name}}的總花費為: {{this.cur_total}}</h3>
+
+
+
 </template>
 
 <script>
 import axios from "axios";
 import ClientFormById from "../components/ClientFormById.vue";
 import ClientFormByList from "../components/ClientFormByList.vue";
+import TableLite from "vue3-table-lite";
+
 export default {
   components: {
     ClientFormById,
     ClientFormByList,
+    TableLite,
   },
   data() {
     return {
@@ -72,7 +43,43 @@ export default {
       cur_member: { id: 1, name: "Ann" },
       cur_trans: [],
       record: [],
-      cur_total: ''
+      cur_total: '',
+      cur_member_detail_1: [],
+      table: {
+        isLoading: false,
+        isReSearch: false,
+        columns: [
+          {
+            label: "Product",
+            field: "name",
+            width: "15%",
+            sortable: false,
+          },
+          {
+            label: "Times",
+            field: "trans_cnt",
+            width: "15%",
+            sortable: false,
+          },
+          {
+            label: "Amount",
+            field: "trans_amount",
+            width: "10%",
+            sortable: false,
+          }
+        ],
+        rows: [],
+        sortable:{
+          order: "id",
+          sort: "asc",
+        },
+        messages: {
+          pagingInfo: "",
+          pageSizeChangeLabel: "Row count:",
+          gotoPageLabel: "Go to page:",
+          noDataAvailable: "No data",
+        },
+      }
     };
   },
   methods: {
@@ -118,8 +125,15 @@ export default {
         }
       });
       this.record = product_trans;
+      this.table.rows = product_trans;
       this.cur_total = temp;
-
+    },
+    doSearch(offset, limit, order, sort) {
+      this.table.isLoading = true;
+      this.table.isReSearch = offset == undefined ? true : false;
+      // do your search event to get newRows and new Total
+      this.table.sortable.order = order;
+      this.table.sortable.sort = sort;
     },
   },
   computed: {
