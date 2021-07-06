@@ -2,7 +2,8 @@
 // Connecting, selecting database
 $user = 'root';
 $password = 'root';
-$db = 'attempt_01';
+//$db = 'attempt_01';
+$db = 'tps';
 $host = 'localhost';
 $port = 8889;
 
@@ -157,7 +158,7 @@ function consumptionPerDay($ID, $link){
     }
 }
 
-//consumptionPerDay($input, $link);
+consumptionPerDay($input, $link);
 
 
 
