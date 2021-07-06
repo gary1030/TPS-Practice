@@ -15,29 +15,12 @@
       @do-search="doSearch"
     ></table-lite>
 
-    <!-- <ul>
-      <li v-for="tran in trans" :key="tran.id">
-        <p>
-          Transaction Date: {{ tran.transaction_date }}, Buyer:
-          {{ tran.member_id }}, Amount: {{ tran.transaction_price }}
-        </p>
-      </li>
-    </ul> -->
-
     <h3>依會員分類</h3>
     <table-lite
       :columns="table2.columns"
       :rows="table2.rows"
       :messages="table2.messages"
     ></table-lite>
-    <!-- <ul>
-      <li v-for="member in recordByMember" :key="member.id">
-        <p>
-          Member: {{ member.name }}, Transaction Times: {{ member.trans_cnt }},
-          Transaction Amount: {{ member.trans_amount }}
-        </p>
-      </li>
-    </ul> -->
 
     <h3>依性別分類</h3>
     <table-lite
@@ -46,11 +29,6 @@
       :total="table.totalRecordCount"
       :messages="table3.messages"
     ></table-lite>
-    <!-- <ul>
-      <li v-for="gender in recordByGender" :key="gender.gender">
-        <p>{{ gender.gender }} 的總消費金額: {{ gender.amount }}</p>
-      </li>
-    </ul> -->
 
     <h3>依年齡分類</h3>
     <table-lite
