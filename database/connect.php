@@ -19,6 +19,9 @@ $success = mysqli_real_connect(
 // UTF8
 mysqli_set_charset($link, 'utf8');
 
+// get ID
+$input = 3;
+
 // function one
 function memberTransDetail($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
@@ -63,7 +66,7 @@ function memberTransDetail($ID, $link){
         fclose($fp);
     }
 }
-//memberTransDetail(3, $link);
+//memberTransDetail($input, $link);
 
 // fuction 2
 function productTransDetail($ID, $link){
@@ -123,7 +126,7 @@ function productTransDetail($ID, $link){
         } 
     }
 }
-//productTransDetail(1, $link);
+//productTransDetail($input, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
@@ -131,12 +134,12 @@ function consumptionPerDay($ID, $link){
     FROM(
         SELECT DATEDIFF('2022-01-01', member.member_date) AS number, member.member_id
         FROM member
-        WHERE member.member_id = 3
+        WHERE member.member_id = $ID
     ) x
     JOIN(
         SELECT SUM(transaction_price) AS number
         FROM transaction
-        WHERE transaction.member_id = 3
+        WHERE transaction.member_id = $ID
     ) y ";
 
     if($stmt = $link -> query($sql))
@@ -154,7 +157,7 @@ function consumptionPerDay($ID, $link){
     }
 }
 
-consumptionPerDay($ID, $link);
+//consumptionPerDay($input, $link);
 
 
 
@@ -234,7 +237,7 @@ function summaryTrans($option, $ID, $link){
         }
     }
 }
-summaryTrans(FALSE, 5, $link);//option = TRUE for gender, FALSE for age level.
+summaryTrans(FALSE, $input, $link);//option = TRUE for gender, FALSE for age level.
 
 
 ?>
