@@ -6,36 +6,65 @@
       v-bind:products="products"
     ></good-form-by-list>
 
-    <h3>{{ cur_product.name }} 商品的所有交易</h3>
-    <table-lite
-      :columns="table.columns"
-      :rows="table.rows"
-      :sortable="table.sortable"
-      :messages="table.messages"
-      @do-search="doSearch"
-    ></table-lite>
+    <input type="checkbox" id="all" value="all" v-model="showingAllTrans" />
+    <label for="all">所有交易紀錄</label>
+    <input
+      type="checkbox"
+      id="member"
+      value="member"
+      v-model="showingMemberTrans"
+    />
+    <label for="member">依會員分類 </label>
+    <input
+      type="checkbox"
+      id="gender"
+      value="gender"
+      v-model="showingGenderTrans"
+    />
+    <label for="gender">依性別分類</label>
+    <input type="checkbox" id="age" value="age" v-model="showingAgeTrans" />
+    <label for="age">依年齡分類</label>
 
-    <h3>依會員分類</h3>
-    <table-lite
-      :columns="table2.columns"
-      :rows="table2.rows"
-      :messages="table2.messages"
-    ></table-lite>
+    <h3 v-if="cur_product">{{ cur_product.name }} 商品</h3>
 
-    <h3>依性別分類</h3>
-    <table-lite
-      :columns="table3.columns"
-      :rows="table3.rows"
-      :total="table.totalRecordCount"
-      :messages="table3.messages"
-    ></table-lite>
+    <div v-if="showingAllTrans">
+      <h3>所有交易紀錄</h3>
+      <table-lite
+        :columns="table.columns"
+        :rows="table.rows"
+        :sortable="table.sortable"
+        :messages="table.messages"
+        @do-search="doSearch"
+      ></table-lite>
+    </div>
 
-    <h3>依年齡分類</h3>
-    <table-lite
-      :columns="recordByAge.columns"
-      :rows="recordByAge.rows"
-      :messages="recordByAge.messages"
-    ></table-lite>
+    <div v-if="showingMemberTrans">
+      <h3>依會員分類</h3>
+      <table-lite
+        :columns="table2.columns"
+        :rows="table2.rows"
+        :messages="table2.messages"
+      ></table-lite>
+    </div>
+
+    <div v-if="showingGenderTrans">
+      <h3>依性別分類</h3>
+      <table-lite
+        :columns="table3.columns"
+        :rows="table3.rows"
+        :total="table.totalRecordCount"
+        :messages="table3.messages"
+      ></table-lite>
+    </div>
+
+    <div v-if="showingAgeTrans">
+      <h3>依年齡分類</h3>
+      <table-lite
+        :columns="recordByAge.columns"
+        :rows="recordByAge.rows"
+        :messages="recordByAge.messages"
+      ></table-lite>
+    </div>
   </div>
 </template>
 
@@ -96,7 +125,7 @@ export default {
         },
       },
       trans: [],
-      cur_product: {},
+      cur_product: null,
       members: [],
       products: [],
       table2: {
@@ -183,15 +212,19 @@ export default {
           noDataAvailable: "No data",
         },
       },
+      showingAllTrans: true,
+      showingMemberTrans: true,
+      showingAgeTrans: false,
+      showingGenderTrans: false,
     };
   },
   methods: {
     async searchProduct(productId) {
       console.log("searching: ", productId);
-      this.cur_product.id = productId;
-      this.cur_product.name = this.products.find(
-        (ele) => ele.id === productId
-      ).name;
+      this.cur_product = {
+        id: productId,
+        name: this.products.find((ele) => ele.id === productId).name,
+      };
 
       //call api to get transaction data
       try {
@@ -258,6 +291,15 @@ export default {
       this.table.sortable.sort = sort;
     },
   },
+  // computed: {
+  //   hasSelected() {
+  //     console.log(this.cur_product);
+  //     if (this.cur_product === {}) {
+  //       return false;
+  //     }
+  //     return true;
+  //   },
+  // },
   async created() {
     try {
       const res = await axios.get(`http://localhost:3000/members`);
