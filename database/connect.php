@@ -50,8 +50,6 @@ function allMember($link){
     }
 }
 
-
-
 // function one
 function memberTransDetailByID($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
@@ -365,9 +363,9 @@ function summaryTrans($ID, $link){
 // get data from frontend
 $received_data = json_decode(file_get_contents("php://input"));
 
-// if($received_data->action == ){
-
-// }
+if($received_data->action == "getProductTrans"){
+    memberTransDetailByID($received_data->params, $link);
+}
 
 
 
