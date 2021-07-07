@@ -265,21 +265,6 @@ export default {
       }
 
       //category by member
-      // var cntByMember = this.members;
-      // //console.log(cntByMember)
-      // cntByMember.forEach((e) => {
-      //   e.trans_cnt = 0;
-      //   e.trans_amount = 0;
-      // });
-      // this.trans.forEach((tran) => {
-      //   var index = cntByMember.findIndex((ele) => ele.id === tran.member_id);
-      //   if (index !== -1) {
-      //     cntByMember[index].trans_cnt += 1;
-      //     cntByMember[index].trans_amount += tran.transaction_price;
-      //   }
-      // });
-      // this.recordByMember = cntByMember;
-      // this.table2.rows = cntByMember;
       try {
         const res = await axios.post("http://localhost:8888/connect.php", {
           action: "getProductByMember",
@@ -303,23 +288,6 @@ export default {
       }
 
       //category by Gender
-      // var male = 0;
-      // var female = 0;
-      // this.trans.forEach((tran) => {
-      //   if (
-      //     this.members.find((ele) => ele.id === tran.member_id).gender ===
-      //     "male"
-      //   ) {
-      //     male += tran.transaction_price;
-      //   } else {
-      //     female += tran.transaction_price;
-      //   }
-      // });
-      // this.recordByGender = [
-      //   { gender: "男性", amount: male },
-      //   { gender: "女性", amount: female },
-      // ];
-      // this.table3.rows = this.recordByGender;
       try {
         const res = await axios.post("http://localhost:8888/connect.php", {
           action: "getProductByGender",
@@ -352,15 +320,6 @@ export default {
       this.table.sortable.sort = sort;
     },
   },
-  // computed: {
-  //   hasSelected() {
-  //     console.log(this.cur_product);
-  //     if (this.cur_product === {}) {
-  //       return false;
-  //     }
-  //     return true;
-  //   },
-  // },
   async created() {
     try {
       const res = await axios.post("http://localhost:8888/connect.php", {
