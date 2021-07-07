@@ -25,7 +25,7 @@ export default {
       if (this.id === "") {
         return;
       }
-      this.$emit("look-up-product", parseInt(this.id));
+      this.$emit("look-up-product", this.id);
       this.id = "";
     },
   },

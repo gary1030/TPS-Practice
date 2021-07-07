@@ -239,10 +239,15 @@ export default {
   methods: {
     async searchProduct(productId) {
       //console.log("searching: ", productId);
+      var product = this.products.find((ele) => ele.product_id === productId);
+      //console.log(this.products.find((ele) => ele.product_id === productId));
+      if (!product) {
+        alert("ID not Exists!");
+        return;
+      }
       this.cur_product = {
         id: productId,
-        name: this.products.find((ele) => ele.product_id === productId)
-          .product_name,
+        name: product.product_name,
       };
 
       //call api to get transaction data
@@ -253,6 +258,7 @@ export default {
         });
         this.trans = res.data;
         this.table.rows = res.data;
+        this.table.totalRecordCount = res.data.length;
         //console.log("Data: ", res.data);
       } catch (e) {
         console.error(e);
@@ -281,15 +287,17 @@ export default {
         });
         var tempData = res.data;
         tempData.forEach((data, i) => {
+          //console.log(i);
           var index = this.members.findIndex(
             (ele) => ele.member_id === data.member_id
           );
           if (index !== -1) {
-            tempData[i].member_name = this.members.member_name;
+            tempData[i].member_name = this.members[index].member_name;
           }
         });
         this.table2.rows = tempData;
         this.recordByMember = tempData;
+        this.table2.totalRecordCount = tempData.length;
       } catch (e) {
         console.error(e);
       }
@@ -319,6 +327,7 @@ export default {
         });
         this.recordByGender = res.data;
         this.table3.rows = res.data;
+        this.table3.totalRecordCount = res.data.length;
       } catch (e) {
         console.error(e);
       }
@@ -330,6 +339,7 @@ export default {
           params: productId,
         });
         this.recordByAge.rows = res.data;
+        this.recordByAge.totalRecordCount = res.data.length;
       } catch (e) {
         console.error(e);
       }
