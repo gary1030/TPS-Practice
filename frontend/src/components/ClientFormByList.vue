@@ -4,10 +4,10 @@
     <select v-model="selected_p">
       <option
         v-for="member in members"
-        v-bind:key="member.id"
-        v-bind:value="member.id"
+        v-bind:key="member.member_id"
+        v-bind:value="member.member_id"
       >
-        {{ member.name }}
+        {{ member.member_name }}
       </option>
     </select>
 
@@ -18,10 +18,12 @@
   </div>
 </template>
 <script>
-import axios from "axios";
 
 export default {
   name: "Member List",
+  props: {
+    members: { required: false, type: Array },
+  },
   methods: {
     onSubmitByList() {
       console.log("Look Up by List");
@@ -34,18 +36,8 @@ export default {
   data() {
     return {
       title: "Member List", //標題名稱
-      members: [],
       selected_p: "",
     };
-  },
-  async created() {
-    try {
-      const res = await axios.get(`http://localhost:3000/members`);
-
-      this.members = res.data;
-    } catch (e) {
-      console.error(e);
-    }
   },
 };
 </script>

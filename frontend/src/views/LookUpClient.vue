@@ -7,28 +7,25 @@
     ></client-form-by-list>
   </div>
   <br/>
-  <h3 v-if="isSearched">{{cur_member.name}} 的歷史消費紀錄</h3>
+  <h3 v-if="isSearched">{{cur_member.member_name}}的每日平均花費為: {{this.cur_member_total[0].consumption_per_day}}</h3>
+  <h3 v-if="isSearched">{{cur_member.member_name}} 的歷史消費紀錄</h3>
   <table-lite
       :columns="table2.columns"
       :rows="table2.rows"
-      :total="record"
+      :total="table2.record"
       :sortable="table2.sortable"
       :messages="table2.messages"
       @do-search="doSearch"
   ></table-lite>
-  <h3 v-if="isSearched">{{ cur_member.name }} 的交易列表</h3>
+  <h3 v-if="isSearched">{{ cur_member.member_name }} 的交易列表</h3>
   <table-lite
       :columns="table.columns"
       :rows="table.rows"
-      :total="record"
+      :total="table.record"
       :sortable="table.sortable"
       :messages="table.messages"
       @do-search="doSearch"
   ></table-lite>
-  <h3 v-if="isSearched">{{cur_member.name}}的總花費為: {{this.cur_total}}</h3>
-
-
-
 </template>
 
 <script>
@@ -49,10 +46,10 @@ export default {
       members: [],
       products: [],
       isSearched: false,
-      cur_member: {id: "", name: ""},
-      cur_trans: [],
-      record: [],
-      cur_total: '',
+      cur_member: {member_id: "", member_name: ""},
+      memberProTrans: [],
+      memberAllTrans: [],
+      cur_member_total: [],
       cur_member_detail_1: [],
       table: {
         isLoading: false,
@@ -60,19 +57,19 @@ export default {
         columns: [
           {
             label: "Product",
-            field: "name",
+            field: "product_name",
             width: "15%",
             sortable: false,
           },
           {
             label: "Times",
-            field: "trans_cnt",
+            field: "transTimes",
             width: "15%",
             sortable: false,
           },
           {
             label: "Amount",
-            field: "trans_amount",
+            field: "transAmount",
             width: "10%",
             sortable: false,
           }
@@ -88,6 +85,7 @@ export default {
           gotoPageLabel: "Go to page:",
           noDataAvailable: "No data",
         },
+        record: 0
       },
       table2: {
         isLoading: false,
@@ -107,13 +105,13 @@ export default {
           },
           {
             label: "product",
-            field: "name",
+            field: "product_name",
             width: "10%",
             sortable: false,
           },
           {
             label: "amount",
-            field: "transaction_amount",
+            field: "transaction_price",
             width: "10%",
             sortable: false,
           }
@@ -129,73 +127,84 @@ export default {
           gotoPageLabel: "Go to page:",
           noDataAvailable: "No data",
         },
+        record: 0,
       }
     };
   },
   methods: {
     async searchMember(memberId) {
-      console.log("searching: ", memberId);
-      this.cur_member.id = memberId;
-      this.cur_member.name = this.members.find(
-        (ele) => ele.id === memberId
-      ).name;
+      var exist = this.members.find((ele) => ele.member_id === memberId);
+      if (!exist){
+        alert("ID not Exists!");
+        return;
+      }
+      this.cur_member.member_id = memberId;
+      this.cur_member.member_name = this.members.find(
+        (ele) => ele.member_id === memberId
+      ).member_name;
 
       this.isSearched = true;
-      
-      var id = this.cur_member.id;
 
-      // get transaction data
+      // try to get data from database
       try {
-        const res = await axios.get(`http://localhost:3000/transactions`);
-        this.trans = res.data;
-      } catch(e) {
-        console.error(e);
-      }
-      
-      // get products data
-      try {
-        const res = await axios.get(`http://localhost:3000/goods`);
-
+        const res = await axios.post("http://localhost:8888/connect.php", {
+          action: "getAllProducts",
+        });
+        console.log(res.data);
         this.products = res.data;
       } catch (e) {
         console.error(e);
       }
 
-      // cur_tran means we only care about trans of current chosen member
-      var cur_tran = this.trans.filter(function(item){
-        return item.member_id === id;
+      try {
+        const res = await axios.post("http://localhost:8888/connect.php", {
+          action: "getMemberProTrans",
+          params: memberId,
+        });
+        this.memberProTrans = res.data;
+        this.table.record = res.data.length;
+      } catch (e) {
+        console.error(e);
+      }
+      this.memberProTrans.forEach((e) =>{
+        e.product_name = this.products.find((ele) => ele.product_id === e.product_id).product_name;
       });
-      // here, we try to change product id to corresponding product name using data.find()
-      cur_tran.forEach((e) => {
-        e.name = this.products.find((ele) => ele.id === e.product_id).name;
+      this.table.rows = this.memberProTrans;
+
+      try {
+        const res = await axios.post("http://localhost:8888/connect.php", {
+          action: "getMemberAllTrans",
+          params: memberId,
+        });
+        this.memberAllTrans = res.data;
+        this.table2.record = res.data.length;
+        
+      } catch (e) {
+        console.error(e);
+      }
+      this.memberAllTrans.forEach((e) =>{
+        e.product_name = this.products.find((ele) => ele.product_id === e.product_id).product_name;
       });
-
-
-      console.log(cur_tran);
-      this.cur_trans = cur_tran;
-      this.table2.rows = cur_tran;
-
+      this.table2.rows = this.memberAllTrans;
+      
+      try {
+        const res = await axios.post("http://localhost:8888/connect.php", {
+          action: "getMemberAvgCost",
+          params: memberId,
+        });
+        
+        this.cur_member_total = res.data;
+      } catch (e) {
+        console.error(e);
+      }
 
       var product_trans = this.products;
       product_trans.forEach((e) => {
         e.trans_cnt = 0;
         e.trans_amount = 0;
       });
-      
-      //temp is used for calculating current member's total spent
-      var temp = 0;
-      cur_tran.forEach((tran) => {
-        var index = product_trans.findIndex((ele) => ele.id === tran.product_id)
-        if (index !== -1) {
-          product_trans[index].trans_cnt += 1;
-          product_trans[index].trans_amount += tran.transaction_price;
-          temp = product_trans[index].trans_amount;
-        }
-      });
-      this.record = product_trans;
-      this.table.rows = product_trans;
-      this.cur_total = temp;
     },
+
     doSearch(offset, limit, order, sort) {
       this.table.isLoading = true;
       this.table.isReSearch = offset == undefined ? true : false;
@@ -206,36 +215,18 @@ export default {
   },
   computed: {
     total: function(){
-      console.log(this.trans);
       return this.trans.reduce(function(total, tran){
         return total + tran.transaction_price;
       }, 0);
     },
-    // curTotal: function(){
-    //   return this.cur_trans.reduce(function(total, tran){
-    //     return total + tran.trans_amount;
-    //   })
-    // }
   },
   async created() {
     try {
-      const res = await axios.get(`http://localhost:3000/transactions`);
-      this.trans = res.data;
-    } catch(e) {
-      console.error(e);
-    }
-    try {
-      const res = await axios.get(`http://localhost:3000/members`);
+      const res = await axios.post("http://localhost:8888/connect.php", {
+        action: "getAllMembers",
+      });
 
       this.members = res.data;
-    } catch (e) {
-      console.error(e);
-    }
-
-    try {
-      const res = await axios.get(`http://localhost:3000/goods`);
-
-      this.products = res.data;
     } catch (e) {
       console.error(e);
     }
