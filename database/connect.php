@@ -19,12 +19,15 @@ $success = mysqli_real_connect(
 // UTF8
 mysqli_set_charset($link, 'utf8');
 
+
+/*
 // get ID
 $inputID = 3;
 // get Member Name
 $inputMemberName = 'Lucas';
 // get Product Name
 $inputProductName = 'Mini-Doras';
+*/
 
 // function one
 function memberTransDetailByID($ID, $link){
@@ -40,10 +43,11 @@ function memberTransDetailByID($ID, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
     
-        $fp = fopen('memberTransDetailByID_1.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('memberTransDetailByID_1.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 
     
@@ -61,13 +65,14 @@ function memberTransDetailByID($ID, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
     
-        $fp = fopen('memberTransDetailByID_2.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('memberTransDetailByID_2.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 }
-memberTransDetailByID($inputID, $link);
+//memberTransDetailByID($inputID, $link);
 
 function memberTransDetailByName($Name, $link){
     //$sql = "SET @name = 'Tatsj';";
@@ -87,10 +92,11 @@ function memberTransDetailByName($Name, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
     
-        $fp = fopen('memberTransDetailByName_1.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('memberTransDetailByName_1.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 
     
@@ -113,10 +119,11 @@ function memberTransDetailByName($Name, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
     
-        $fp = fopen('memberTransDetailByName_2.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('memberTransDetailByName_2.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 }
 //memberTransDetailByName($inputMemberName, $link);
@@ -138,12 +145,12 @@ function productTransDetailByID($ID, $link){
         }
         //生成json
         $myJSON = json_encode($rows);
-        // echo $myJSON;
+        echo $myJSON;
         
         //在電腦上生成
-        $fp = fopen('productTransDetailByID_1.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('productTransDetailByID_1.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
     
 
@@ -164,15 +171,15 @@ function productTransDetailByID($ID, $link){
         } 
         //生成json
         $myJSON = json_encode($rows);
-        // echo $myJSON;
+        echo $myJSON;
     
         //在電腦上生成
-        $fp = fopen('productTransDetailByID_2.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('productTransDetailByID_2.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 }
-productTransDetailByID($inputID, $link);
+//productTransDetailByID($inputID, $link);
 
 function productTransDetailByName($Name, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
@@ -191,11 +198,11 @@ function productTransDetailByName($Name, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
-        // echo $myJSON;
+        echo $myJSON;
     
-        $fp = fopen('productTransDetailByName_1.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('productTransDetailByName_1.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
     else{
         echo "Fail to find.<br>";
@@ -221,15 +228,15 @@ function productTransDetailByName($Name, $link){
         } 
         //生成json
         $myJSON = json_encode($rows);
-        // echo $myJSON;
+        echo $myJSON;
     
         //在電腦上生成
-        $fp = fopen('productTransDetailByName_2.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('productTransDetailByName_2.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 }
-productTransDetailByName($inputProductName, $link);
+//productTransDetailByName($inputProductName, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
@@ -253,17 +260,14 @@ function consumptionPerDay($ID, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
     
-        $fp = fopen('consumptionPerDay.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('consumptionPerDay.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 }
-
 // consumptionPerDay($inputID, $link);
-
-
-
 
 // function four
 function summaryTrans($ID, $link){
@@ -285,10 +289,11 @@ function summaryTrans($ID, $link){
             $rows[] = $result;
         }
         $myJSON = json_encode($rows);
+        echo $myJSON;
 
-        $fp = fopen('summaryTrans_gender.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('summaryTrans_gender.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
      
     /*function four (input product id and output transaction sum & times for different age level)
@@ -322,17 +327,23 @@ function summaryTrans($ID, $link){
             $rows[] = $result;
         }
 
-
         $myJSON = json_encode($rows);
+        echo $myJSON;
 
-
-        $fp = fopen('summaryTrans_age.json', 'w');
-        fwrite($fp, $myJSON);
-        fclose($fp);
+        // $fp = fopen('summaryTrans_age.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
     }
 
 }
 // summaryTrans($inputID, $link);
 
+
+// get data from frontend
+$received_data = json_decode(file_get_contents("php://input"));
+
+// if($received_data->action == ){
+
+// }
 
 ?>
