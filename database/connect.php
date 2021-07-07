@@ -49,6 +49,7 @@ function allMember($link){
         // fclose($fp);
     }
 }
+// allMember($link);
 
 function allProduct($link){
     $sql = "SELECT *
