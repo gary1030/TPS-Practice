@@ -244,7 +244,7 @@ function productTransDetailByID_2($ID, $link){
         } 
         //生成json
         $myJSON = json_encode($rows);
-        //echo $myJSON;
+        echo $myJSON;
     
         //在電腦上生成
         // $fp = fopen('productTransDetailByID_2.json', 'w');
@@ -316,7 +316,7 @@ function productTransDetailByID_2($ID, $link){
 function consumptionPerDay($ID, $link){
     $sql = "SELECT x.member_id, y.number / x.number AS 'consumption_per_day'
     FROM(
-        SELECT DATEDIFF('2022-01-01', member.member_date) AS number, member.member_id
+        SELECT DATEDIFF(NOW(), member.member_date) AS number, member.member_id
         FROM member
         WHERE member.member_id = $ID
     ) x
