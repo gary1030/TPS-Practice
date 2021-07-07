@@ -35,7 +35,7 @@ $inputMemberName = 'Lucas';
 $inputProductName = 'Mini-Doras';
 */
 
-// 
+// function for getting all data
 function allMember($link){
     $sql = "SELECT *
     FROM member";
@@ -100,7 +100,7 @@ function allTrans($link){
 // allTrans($link);
 
 // function one
-function memberTransDetailByID($ID, $link){
+function memberTransDetailByID_1($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
     FROM transaction
     WHERE transaction.member_id = $ID";
@@ -119,8 +119,10 @@ function memberTransDetailByID($ID, $link){
         // fwrite($fp, $myJSON);
         // fclose($fp);
     }
+}
+//memberTransDetailByID_1($inputID, $link);
 
-    
+function memberTransDetailByID_2($ID, $link){
     $sql = "SELECT 
             transaction.product_id, COUNT(transaction.product_id) as transTimes, SUM(transaction.transaction_price) as transAmount
             FROM transaction WHERE member_id = $ID
@@ -142,7 +144,7 @@ function memberTransDetailByID($ID, $link){
         // fclose($fp);
     }
 }
-//memberTransDetailByID($inputID, $link);
+//memberTransDetailByID_2($inputID, $link);
 
 // function memberTransDetailByName($Name, $link){
 //     //$sql = "SET @name = 'Tatsj';";
@@ -199,12 +201,11 @@ function memberTransDetailByID($ID, $link){
 // //memberTransDetailByName($inputMemberName, $link);
 
 // fuction 2
-function productTransDetailByID($ID, $link){
+function productTransDetailByID_1($ID, $link){
     /*function two (input product id and get all the transaction record)*/
     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
     FROM transaction
     WHERE transaction.product_id = $ID";
-
 
     if($stmt = $link -> query($sql))
     {
@@ -222,15 +223,16 @@ function productTransDetailByID($ID, $link){
         // fwrite($fp, $myJSON);
         // fclose($fp);
     }
-    
+}
+//productTransDetailByID_1($inputID, $link);
 
+function productTransDetailByID_2($ID, $link){
     /*function two (input product id and get transaction sum & times from each member)*/
     $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
     FROM transaction
     WHERE product_id = $ID
     GROUP BY member_id
     ORDER BY member_id";
-
 
     if($stmt = $link -> query($sql))
     {
@@ -249,7 +251,8 @@ function productTransDetailByID($ID, $link){
         // fclose($fp);
     }
 }
-//productTransDetailByID($inputID, $link);
+//productTransDetailByID_2($inputID, $link);
+
 
 // function productTransDetailByName($Name, $link){
 //     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
@@ -339,9 +342,8 @@ function consumptionPerDay($ID, $link){
 }
 // consumptionPerDay($inputID, $link);
 
-// function four
-function summaryTrans($ID, $link){
-        
+// function four for different genders
+function summaryTrans_gender($ID, $link){
     /*function four (input product id and output transaction sum & times for different genders)*/
     $sql = "SELECT member.member_gender, COUNT(transaction.member_id) AS transaction_times, SUM(transaction.transaction_price) AS transaction_amount
     FROM member
@@ -365,7 +367,12 @@ function summaryTrans($ID, $link){
         // fwrite($fp, $myJSON);
         // fclose($fp);
     }
-     
+
+}
+// summaryTrans_gender($inputID, $link);
+
+// function four for different age level
+function summaryTrans_age($ID, $link){
     /*function four (input product id and output transaction sum & times for different age level)
     */
     /*Where age level is 0 for age group below 20, 1 for age group 20-30, 2 for age group 30-40, 3 for age group 40 above.*/
@@ -406,11 +413,11 @@ function summaryTrans($ID, $link){
     }
 
 }
-// summaryTrans($inputID, $link);
+// summaryTrans_age($inputID, $link);
 
 
 // get data from frontend
-$received_data = json_decode(file_get_contents("php://input"));
+$received_data = json_decode(file_get_contents("php://input")) or die('Empty.');
 
 if($received_data->action == "getProductTrans"){
     memberTransDetailByID($received_data->params, $link);
