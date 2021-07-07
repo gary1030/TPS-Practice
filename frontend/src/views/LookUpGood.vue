@@ -136,25 +136,25 @@ export default {
         columns: [
           {
             label: "Member ID",
-            field: "id",
+            field: "member_id",
             width: "3%",
             sortable: false,
           },
           {
             label: "Member Name",
-            field: "name",
+            field: "member_name",
             width: "10%",
             sortable: false,
           },
           {
             label: "Transaction Times",
-            field: "trans_cnt",
+            field: "transTimes",
             width: "10%",
             sortable: false,
           },
           {
             label: "Transaction Amount",
-            field: "trans_amount",
+            field: "transAmount",
             width: "10%",
             sortable: false,
           },
@@ -172,13 +172,19 @@ export default {
         columns: [
           {
             label: "Gender",
-            field: "gender",
+            field: "member_gender",
+            width: "10%",
+            sortable: false,
+          },
+          {
+            label: "Times",
+            field: "transaction_times",
             width: "10%",
             sortable: false,
           },
           {
             label: "Amount",
-            field: "amount",
+            field: "transaction_amount",
             width: "10%",
             sortable: false,
           },
@@ -198,13 +204,19 @@ export default {
         columns: [
           {
             label: "Age",
-            field: "age",
+            field: "ageLevel",
+            width: "10%",
+            sortable: false,
+          },
+          {
+            label: "Times",
+            field: "transTimes",
             width: "10%",
             sortable: false,
           },
           {
             label: "Amount",
-            field: "amount",
+            field: "transAmount",
             width: "10%",
             sortable: false,
           },
@@ -226,10 +238,11 @@ export default {
   },
   methods: {
     async searchProduct(productId) {
-      console.log("searching: ", productId);
+      //console.log("searching: ", productId);
       this.cur_product = {
         id: productId,
-        name: this.products.find((ele) => ele.id === productId).name,
+        name: this.products.find((ele) => ele.product_id === productId)
+          .product_name,
       };
 
       //call api to get transaction data
@@ -240,7 +253,7 @@ export default {
         });
         this.trans = res.data;
         this.table.rows = res.data;
-        console.log("Data: ", res.data);
+        //console.log("Data: ", res.data);
       } catch (e) {
         console.error(e);
       }
@@ -266,8 +279,17 @@ export default {
           action: "getProductByMember",
           params: productId,
         });
-        this.recordByMember = res.data;
-        this.table2.rows = res.data;
+        var tempData = res.data;
+        tempData.forEach((data, i) => {
+          var index = this.members.findIndex(
+            (ele) => ele.member_id === data.member_id
+          );
+          if (index !== -1) {
+            tempData[i].member_name = this.members.member_name;
+          }
+        });
+        this.table2.rows = tempData;
+        this.recordByMember = tempData;
       } catch (e) {
         console.error(e);
       }
@@ -307,7 +329,7 @@ export default {
           action: "getProductByAge",
           params: productId,
         });
-        this.recordByAge = res.data;
+        this.recordByAge.rows = res.data;
       } catch (e) {
         console.error(e);
       }
