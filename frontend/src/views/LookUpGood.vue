@@ -34,7 +34,6 @@
         :rows="table.rows"
         :sortable="table.sortable"
         :messages="table.messages"
-        :total="table.totalRecordCount"
         @do-search="doSearch"
       ></table-lite>
     </div>
@@ -44,7 +43,6 @@
       <table-lite
         :columns="table2.columns"
         :rows="table2.rows"
-        :total="table2.totalRecordCount"
         :messages="table2.messages"
       ></table-lite>
     </div>
@@ -54,7 +52,7 @@
       <table-lite
         :columns="table3.columns"
         :rows="table3.rows"
-        :total="table3.totalRecordCount"
+        :total="table.totalRecordCount"
         :messages="table3.messages"
       ></table-lite>
     </div>
@@ -64,7 +62,6 @@
       <table-lite
         :columns="recordByAge.columns"
         :rows="recordByAge.rows"
-        :total="recordByAge.totalRecordCount"
         :messages="recordByAge.messages"
       ></table-lite>
     </div>
@@ -116,7 +113,6 @@ export default {
           },
         ],
         rows: [],
-        totalRecordCount: 0,
         sortable: {
           order: "id",
           sort: "asc",
@@ -160,7 +156,6 @@ export default {
           },
         ],
         rows: [],
-        totalRecordCount: 0,
         messages: {
           pagingInfo: "",
           pageSizeChangeLabel: "Row count:",
@@ -210,7 +205,6 @@ export default {
           },
         ],
         rows: [],
-        totalRecordCount: 0,
         messages: {
           pagingInfo: "",
           pageSizeChangeLabel: "Row count:",
@@ -235,7 +229,7 @@ export default {
       //call api to get transaction data
       try {
         const res = await axios.post("http://localhost:8888/connect.php", {
-          action: "getProductAllTrans",
+          action: "getProductTrans",
           params: productId,
         });
         this.trans = res.data;
@@ -246,71 +240,51 @@ export default {
       }
 
       //category by member
-      // var cntByMember = this.members;
-      // //console.log(cntByMember)
-      // cntByMember.forEach((e) => {
-      //   e.trans_cnt = 0;
-      //   e.trans_amount = 0;
-      // });
-      // this.trans.forEach((tran) => {
-      //   var index = cntByMember.findIndex((ele) => ele.id === tran.member_id);
-      //   if (index !== -1) {
-      //     cntByMember[index].trans_cnt += 1;
-      //     cntByMember[index].trans_amount += tran.transaction_price;
-      //   }
-      // });
-      // this.recordByMember = cntByMember;
-      // this.table2.rows = cntByMember;
-      try {
-        const res = await axios.post("http://localhost:8888/connect.php", {
-          action: "getProductByMember",
-          params: productId,
-        });
-        this.recordByMember = res.data;
-        this.table2.rows = res.data;
-      } catch (e) {
-        console.error(e);
-      }
+      var cntByMember = this.members;
+      //console.log(cntByMember)
+      cntByMember.forEach((e) => {
+        e.trans_cnt = 0;
+        e.trans_amount = 0;
+      });
+      this.trans.forEach((tran) => {
+        var index = cntByMember.findIndex((ele) => ele.id === tran.member_id);
+        if (index !== -1) {
+          cntByMember[index].trans_cnt += 1;
+          cntByMember[index].trans_amount += tran.transaction_price;
+        }
+      });
+      this.recordByMember = cntByMember;
+      this.table2.rows = cntByMember;
 
       //category by Gender
-      // var male = 0;
-      // var female = 0;
-      // this.trans.forEach((tran) => {
-      //   if (
-      //     this.members.find((ele) => ele.id === tran.member_id).gender ===
-      //     "male"
-      //   ) {
-      //     male += tran.transaction_price;
-      //   } else {
-      //     female += tran.transaction_price;
-      //   }
-      // });
-      // this.recordByGender = [
-      //   { gender: "男性", amount: male },
-      //   { gender: "女性", amount: female },
-      // ];
-      // this.table3.rows = this.recordByGender;
-      try {
-        const res = await axios.post("http://localhost:8888/connect.php", {
-          action: "getProductByGender",
-          params: productId,
-        });
-        this.recordByGender = res.data;
-        this.table3.rows = res.data;
-      } catch (e) {
-        console.error(e);
-      }
+      var male = 0;
+      var female = 0;
+      this.trans.forEach((tran) => {
+        if (
+          this.members.find((ele) => ele.id === tran.member_id).gender ===
+          "male"
+        ) {
+          male += tran.transaction_price;
+        } else {
+          female += tran.transaction_price;
+        }
+      });
+      this.recordByGender = [
+        { gender: "男性", amount: male },
+        { gender: "女性", amount: female },
+      ];
+      this.table3.rows = this.recordByGender;
 
       //category by Age
-      try {
-        const res = await axios.post("http://localhost:8888/connect.php", {
-          action: "getProductByAge",
-          params: productId,
-        });
-        this.recordByAge = res.data;
-      } catch (e) {
-        console.error(e);
-      }
+
+      this.recordByAge.rows = [
+        { age: "20歲以下", amount: 100 },
+        { age: "21~30", amount: 100 },
+        { age: "31~40", amount: 100 },
+        { age: "41~50", amount: 100 },
+        { age: "51~60", amount: 100 },
+        { age: "61歲以上", amount: 100 },
+      ];
     },
     doSearch(offset, limit, order, sort) {
       this.table.isLoading = true;
@@ -331,8 +305,8 @@ export default {
   // },
   async created() {
     try {
-      const res = await axios.post("http://localhost:8888/connect.php", {
-        action: "getAllMembers",
+      const res = await axios.get(`http://localhost:3000/members`, {
+        action: "members",
       });
 
       this.members = res.data;
@@ -341,9 +315,7 @@ export default {
     }
 
     try {
-      const res = await axios.post("http://localhost:8888/connect.php", {
-        action: "getAllProducts",
-      });
+      const res = await axios.get(`http://localhost:3000/goods`);
 
       this.products = res.data;
     } catch (e) {
