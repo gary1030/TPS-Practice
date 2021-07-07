@@ -4,7 +4,10 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Max-Age: 86400');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 // Connecting, selecting database
 $user = 'root';
 $password = 'root';
@@ -104,6 +107,7 @@ function memberTransDetailByID_1($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
     FROM transaction
     WHERE transaction.member_id = $ID";
+    
 
     if($stmt = $link -> query($sql))
     {
@@ -243,7 +247,7 @@ function productTransDetailByID_2($ID, $link){
         } 
         //生成json
         $myJSON = json_encode($rows);
-        echo $myJSON;
+        //echo $myJSON;
     
         //在電腦上生成
         // $fp = fopen('productTransDetailByID_2.json', 'w');
@@ -417,12 +421,16 @@ function summaryTrans_age($ID, $link){
 
 
 // get data from frontend
-$received_data = json_decode(file_get_contents("php://input")) or die('Empty.');
+$received_data = json_decode(file_get_contents("php://input"), true);
+$task = $received_data['action'];
+$params = $received_data['params'];
+//echo $task;
 
-if($received_data->action == "getProductTrans"){
-    memberTransDetailByID($received_data->params, $link);
+if($task == "getProductTrans"){
+    echo $received_data->params;
+    productTransDetailByID($params, $link);
 }
-
+//productTransDetailByID(2, $link);
 
 
 ?>

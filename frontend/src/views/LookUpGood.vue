@@ -228,10 +228,13 @@ export default {
 
       //call api to get transaction data
       try {
-        const res = await axios.get(`http://localhost:3000/transactions`);
+        const res = await axios.post("http://localhost:8888/connect.php", {
+          action: "getProductTrans",
+          params: productId,
+        });
         this.trans = res.data;
         this.table.rows = res.data;
-        //console.log(this.trans);
+        console.log("Data: ", res.data);
       } catch (e) {
         console.error(e);
       }
@@ -302,7 +305,9 @@ export default {
   // },
   async created() {
     try {
-      const res = await axios.get(`http://localhost:3000/members`);
+      const res = await axios.get(`http://localhost:3000/members`, {
+        action: "members",
+      });
 
       this.members = res.data;
     } catch (e) {
