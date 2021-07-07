@@ -29,6 +29,29 @@ $inputMemberName = 'Lucas';
 $inputProductName = 'Mini-Doras';
 */
 
+// 
+function allMember($link){
+    $sql = "SELECT *
+    FROM member";
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+        echo $myJSON;
+    
+        // $fp = fopen('consumptionPerDay.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
+    }
+}
+
+
+
 // function one
 function memberTransDetailByID($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
@@ -345,5 +368,7 @@ $received_data = json_decode(file_get_contents("php://input"));
 // if($received_data->action == ){
 
 // }
+
+
 
 ?>
