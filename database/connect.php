@@ -4,10 +4,7 @@ header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
 header('Access-Control-Max-Age: 86400');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
-<<<<<<< Updated upstream
 
-=======
->>>>>>> Stashed changes
 // Connecting, selecting database
 $user = 'root';
 $password = 'root';
@@ -426,11 +423,33 @@ $task = $received_data['action'];
 $params = $received_data['params'];
 //echo $task;
 
-if($task == "getProductTrans"){
-    echo $received_data->params;
-    productTransDetailByID($params, $link);
+if($task == "getAllMembers"){
+    //echo $received_data->params;
+    allMember($link);
 }
-//productTransDetailByID(2, $link);
-
+else if($task == "getAllProducts"){
+    allProduct($link);
+}
+else if($task == "getMemberAllTrans"){
+    memberTransDetailByID_1($params, $link);
+}
+else if($task == "getMemberProTrans"){
+    memberTransDetailByID_2($params, $link);
+}
+else if($task == "getProductAllTrans"){
+    productTransDetailByID_1($params, $link);
+}
+else if($task == "getProductByMember"){
+    productTransDetailByID_2($params, $link);
+}
+else if($task == "getProductByGender"){
+    summaryTrans_gender($params, $link);
+}
+else if($task == "getProductByAge"){
+    summaryTrans_age($params, $link);
+}
+else if($task == "getMemberAvgCost"){
+    consumptionPerDay($params, $link);
+}
 
 ?>
