@@ -4,10 +4,10 @@
     <select v-model="selected_p">
       <option
         v-for="product in products"
-        v-bind:key="product.id"
-        v-bind:value="product.id"
+        v-bind:key="product.product_id"
+        v-bind:value="product.product_id"
       >
-        {{ product.name }}
+        {{ product.product_name }}
       </option>
     </select>
 
