@@ -50,6 +50,48 @@ function allMember($link){
     }
 }
 
+function allProduct($link){
+    $sql = "SELECT *
+    FROM product";
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+        echo $myJSON;
+    
+        // $fp = fopen('consumptionPerDay.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
+    }
+}
+// allProduct($link);
+
+function allTrans($link){
+    $sql = "SELECT *
+    FROM transaction";
+
+    if($stmt = $link -> query($sql))
+    {
+        $rows = array();
+        while($result = mysqli_fetch_assoc($stmt))
+        {
+            $rows[] = $result;
+        }
+        $myJSON = json_encode($rows);
+        echo $myJSON;
+    
+        // $fp = fopen('consumptionPerDay.json', 'w');
+        // fwrite($fp, $myJSON);
+        // fclose($fp);
+    }
+}
+// allTrans($link);
+
 // function one
 function memberTransDetailByID($ID, $link){
     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
@@ -95,59 +137,59 @@ function memberTransDetailByID($ID, $link){
 }
 //memberTransDetailByID($inputID, $link);
 
-function memberTransDetailByName($Name, $link){
-    //$sql = "SET @name = 'Tatsj';";
-    $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
-    FROM transaction
-    WHERE transaction.member_id IN(
-        SELECT member_id
-        FROM member
-        WHERE member_name LIKE '%$Name'
-    )";
+// function memberTransDetailByName($Name, $link){
+//     //$sql = "SET @name = 'Tatsj';";
+//     $sql = "SELECT transaction_id, transaction_date, transaction.product_id, transaction_price
+//     FROM transaction
+//     WHERE transaction.member_id IN(
+//         SELECT member_id
+//         FROM member
+//         WHERE member_name LIKE '%$Name'
+//     )";
 
-    if($stmt = $link -> query($sql))
-    {
-        $rows = array();
-        while($result = mysqli_fetch_assoc($stmt))
-        {
-            $rows[] = $result;
-        }
-        $myJSON = json_encode($rows);
-        echo $myJSON;
+//     if($stmt = $link -> query($sql))
+//     {
+//         $rows = array();
+//         while($result = mysqli_fetch_assoc($stmt))
+//         {
+//             $rows[] = $result;
+//         }
+//         $myJSON = json_encode($rows);
+//         echo $myJSON;
     
-        // $fp = fopen('memberTransDetailByName_1.json', 'w');
-        // fwrite($fp, $myJSON);
-        // fclose($fp);
-    }
+//         // $fp = fopen('memberTransDetailByName_1.json', 'w');
+//         // fwrite($fp, $myJSON);
+//         // fclose($fp);
+//     }
 
     
-    $sql = "SELECT 
-            transaction.product_id, COUNT(transaction.product_id) as transTimes, SUM(transaction.transaction_price) as transAmount
-            FROM transaction 
-            WHERE transaction.member_id IN(
-                SELECT member_id
-                FROM member
-                WHERE member_name LIKE '%$Name'
-            )
-            GROUP BY product_id
-            ORDER BY product_id";
+//     $sql = "SELECT 
+//             transaction.product_id, COUNT(transaction.product_id) as transTimes, SUM(transaction.transaction_price) as transAmount
+//             FROM transaction 
+//             WHERE transaction.member_id IN(
+//                 SELECT member_id
+//                 FROM member
+//                 WHERE member_name LIKE '%$Name'
+//             )
+//             GROUP BY product_id
+//             ORDER BY product_id";
     
-    if($stmt = $link -> query($sql))
-    {
-        $rows = array();
-        while($result = mysqli_fetch_assoc($stmt))
-        {
-            $rows[] = $result;
-        }
-        $myJSON = json_encode($rows);
-        echo $myJSON;
+//     if($stmt = $link -> query($sql))
+//     {
+//         $rows = array();
+//         while($result = mysqli_fetch_assoc($stmt))
+//         {
+//             $rows[] = $result;
+//         }
+//         $myJSON = json_encode($rows);
+//         echo $myJSON;
     
-        // $fp = fopen('memberTransDetailByName_2.json', 'w');
-        // fwrite($fp, $myJSON);
-        // fclose($fp);
-    }
-}
-//memberTransDetailByName($inputMemberName, $link);
+//         // $fp = fopen('memberTransDetailByName_2.json', 'w');
+//         // fwrite($fp, $myJSON);
+//         // fclose($fp);
+//     }
+// }
+// //memberTransDetailByName($inputMemberName, $link);
 
 // fuction 2
 function productTransDetailByID($ID, $link){
@@ -202,62 +244,62 @@ function productTransDetailByID($ID, $link){
 }
 //productTransDetailByID($inputID, $link);
 
-function productTransDetailByName($Name, $link){
-    $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
-    FROM transaction
-    WHERE transaction.product_id IN(
-        SELECT product_id
-        FROM product
-        WHERE product_name LIKE '%$Name'
-    )";
+// function productTransDetailByName($Name, $link){
+//     $sql = "SELECT transaction_id, transaction_date, transaction.member_id, transaction_price
+//     FROM transaction
+//     WHERE transaction.product_id IN(
+//         SELECT product_id
+//         FROM product
+//         WHERE product_name LIKE '%$Name'
+//     )";
 
-    if($stmt = $link -> query($sql))
-    {
-        $rows = array();
-        while($result = mysqli_fetch_assoc($stmt))
-        {
-            $rows[] = $result;
-        }
-        $myJSON = json_encode($rows);
-        echo $myJSON;
+//     if($stmt = $link -> query($sql))
+//     {
+//         $rows = array();
+//         while($result = mysqli_fetch_assoc($stmt))
+//         {
+//             $rows[] = $result;
+//         }
+//         $myJSON = json_encode($rows);
+//         echo $myJSON;
     
-        // $fp = fopen('productTransDetailByName_1.json', 'w');
-        // fwrite($fp, $myJSON);
-        // fclose($fp);
-    }
-    else{
-        echo "Fail to find.<br>";
-    }
-    /*function two (input product id and get transaction sum & times from each member)*/
-    $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
-    FROM transaction
-    WHERE transaction.product_id IN(
-        SELECT product_id
-        FROM product
-        WHERE product_name LIKE '%$Name'
-    )
-    GROUP BY member_id
-    ORDER BY member_id";
+//         // $fp = fopen('productTransDetailByName_1.json', 'w');
+//         // fwrite($fp, $myJSON);
+//         // fclose($fp);
+//     }
+//     else{
+//         echo "Fail to find.<br>";
+//     }
+//     /*function two (input product id and get transaction sum & times from each member)*/
+//     $sql = "SELECT transaction.member_id, COUNT(transaction.member_id) AS transTimes, SUM(transaction.transaction_price) AS transAmount
+//     FROM transaction
+//     WHERE transaction.product_id IN(
+//         SELECT product_id
+//         FROM product
+//         WHERE product_name LIKE '%$Name'
+//     )
+//     GROUP BY member_id
+//     ORDER BY member_id";
 
 
-    if($stmt = $link -> query($sql))
-    {
-        $rows = array();
-        while($result = mysqli_fetch_assoc($stmt)) 
-        { 
-            $rows[] = $result;
-        } 
-        //生成json
-        $myJSON = json_encode($rows);
-        echo $myJSON;
+//     if($stmt = $link -> query($sql))
+//     {
+//         $rows = array();
+//         while($result = mysqli_fetch_assoc($stmt)) 
+//         { 
+//             $rows[] = $result;
+//         } 
+//         //生成json
+//         $myJSON = json_encode($rows);
+//         echo $myJSON;
     
-        //在電腦上生成
-        // $fp = fopen('productTransDetailByName_2.json', 'w');
-        // fwrite($fp, $myJSON);
-        // fclose($fp);
-    }
-}
-//productTransDetailByName($inputProductName, $link);
+//         //在電腦上生成
+//         // $fp = fopen('productTransDetailByName_2.json', 'w');
+//         // fwrite($fp, $myJSON);
+//         // fclose($fp);
+//     }
+// }
+// //productTransDetailByName($inputProductName, $link);
 
 // function three
 function consumptionPerDay($ID, $link){
